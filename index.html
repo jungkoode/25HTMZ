@@ -6,372 +6,377 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>CHRONOS Earth Control System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&display=swap');
 
 ```
     :root {
-        --neon-blue: #00FFFF;
-        --neon-cyan: #25E1ED;
-        --electric-blue: #0080FF;
-        --temporal-gold: #C8B029;
-        --quantum-purple: #BD00FF;
-        --deep-black: #00060e;
-        --charcoal: #1A1A1A;
-        --radiation-green: #00FF9F;
-        --panel-bg: rgba(0, 6, 14, 0.9);
-        --glow-blue: 0 0 20px #00FFFF, 0 0 40px #25E1ED;
+        --neon-blue: #00FFFF !important;
+        --neon-cyan: #25E1ED !important;
+        --electric-blue: #0080FF !important;
+        --temporal-gold: #FFD700 !important;
+        --quantum-purple: #BD00FF !important;
+        --deep-black: #000000 !important;
+        --charcoal: #111111 !important;
+        --radiation-green: #00FF9F !important;
+        --panel-bg: rgba(0, 0, 0, 0.85) !important;
     }
 
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
     }
 
     body {
-        background: radial-gradient(ellipse at center, #001122 0%, var(--deep-black) 70%);
-        font-family: 'Orbitron', monospace;
-        overflow: hidden;
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        color: var(--neon-blue);
-        cursor: none;
+        background: #000000 !important;
+        font-family: 'Orbitron', monospace !important;
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+        color: var(--neon-blue) !important;
+        touch-action: none !important;
     }
 
     #globe-container {
-        width: 100%;
-        height: 100%;
-        touch-action: none;
-        position: relative;
+        width: 100% !important;
+        height: 100% !important;
+        touch-action: none !important;
+        position: relative !important;
     }
 
     .loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--deep-black);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        transition: opacity 0.8s ease-out;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: var(--deep-black) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 1000 !important;
+        transition: opacity 0.8s ease-out !important;
     }
 
     .loading-spinner {
-        width: 80px;
-        height: 80px;
-        border: 3px solid transparent;
-        border-top: 3px solid var(--neon-blue);
-        border-radius: 50%;
-        animation: spin 1.5s linear infinite;
-        margin-bottom: 2rem;
-        box-shadow: var(--glow-blue);
+        width: 60px !important;
+        height: 60px !important;
+        border: 3px solid transparent !important;
+        border-top: 3px solid var(--neon-blue) !important;
+        border-radius: 50% !important;
+        animation: spin 1.5s linear infinite !important;
+        margin-bottom: 1.5rem !important;
+        box-shadow: 0 0 20px var(--neon-blue) !important;
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% { transform: rotate(0deg) !important; }
+        100% { transform: rotate(360deg) !important; }
     }
 
     .system-title {
-        color: var(--neon-blue);
-        font-size: clamp(2rem, 6vw, 4rem);
-        font-weight: 900;
-        text-align: center;
-        letter-spacing: 4px;
-        text-shadow: var(--glow-blue);
-        animation: pulse-title 3s ease-in-out infinite;
-        margin-bottom: 1rem;
+        color: var(--neon-blue) !important;
+        font-size: 3rem !important;
+        font-weight: 900 !important;
+        text-align: center !important;
+        letter-spacing: 4px !important;
+        text-shadow: 0 0 20px var(--neon-blue) !important;
+        animation: pulse-title 3s ease-in-out infinite !important;
+        margin-bottom: 1rem !important;
     }
 
     @keyframes pulse-title {
         0%, 100% { 
-            opacity: 1; 
-            text-shadow: var(--glow-blue);
+            opacity: 1 !important; 
+            text-shadow: 0 0 20px var(--neon-blue) !important;
         }
         50% { 
-            opacity: 0.7; 
-            text-shadow: 0 0 10px var(--neon-blue);
+            opacity: 0.7 !important; 
+            text-shadow: 0 0 40px var(--neon-cyan) !important;
         }
     }
 
     .loading-text {
-        color: var(--neon-cyan);
-        font-size: 1.2rem;
-        font-weight: 300;
-        text-align: center;
-        animation: pulse 2s ease-in-out infinite;
+        color: var(--neon-cyan) !important;
+        font-size: 1rem !important;
+        font-weight: 300 !important;
+        text-align: center !important;
     }
 
-    .hud-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 100;
+    /* Top Header - Minimal */
+    .top-header {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        padding: 1rem !important;
+        z-index: 100 !important;
+        text-align: center !important;
+        pointer-events: none !important;
     }
 
-    .top-hud {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        background: linear-gradient(to bottom, var(--panel-bg) 0%, transparent 100%);
+    .chronos-title {
+        color: var(--neon-blue) !important;
+        font-size: 2.5rem !important;
+        font-weight: 900 !important;
+        letter-spacing: 3px !important;
+        text-shadow: 0 0 20px var(--neon-blue) !important;
+        animation: title-glow 4s ease-in-out infinite !important;
     }
 
-    .chronos-header {
-        text-align: center;
-        margin-bottom: 1rem;
+    @keyframes title-glow {
+        0%, 100% { text-shadow: 0 0 20px var(--neon-blue) !important; }
+        50% { text-shadow: 0 0 40px var(--neon-cyan), 0 0 60px var(--neon-blue) !important; }
     }
 
-    .main-title {
-        color: var(--neon-blue);
-        font-size: clamp(1.8rem, 5vw, 3rem);
-        font-weight: 900;
-        letter-spacing: 3px;
-        text-shadow: var(--glow-blue);
-        animation: glow-pulse 4s ease-in-out infinite;
+    /* Side Panels - Not blocking globe */
+    .left-panel {
+        position: absolute !important;
+        top: 120px !important;
+        left: 10px !important;
+        width: 200px !important;
+        z-index: 100 !important;
+        pointer-events: auto !important;
     }
 
-    @keyframes glow-pulse {
-        0%, 100% { text-shadow: var(--glow-blue); }
-        50% { text-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-cyan); }
+    .right-panel {
+        position: absolute !important;
+        top: 120px !important;
+        right: 10px !important;
+        width: 200px !important;
+        z-index: 100 !important;
+        pointer-events: auto !important;
     }
 
-    .subtitle {
-        color: var(--neon-cyan);
-        font-size: 0.9rem;
-        font-weight: 300;
-        letter-spacing: 1px;
-        margin-top: 0.5rem;
+    .status-card {
+        background: var(--panel-bg) !important;
+        border: 1px solid var(--neon-blue) !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        margin-bottom: 10px !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
     }
 
-    .control-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1rem;
-        pointer-events: auto;
-    }
-
-    .control-panel {
-        background: var(--panel-bg);
-        border: 1px solid var(--neon-blue);
-        border-radius: 8px;
-        padding: 1rem;
-        backdrop-filter: blur(10px);
-        box-shadow: 
-            0 0 20px rgba(0, 255, 255, 0.2),
-            inset 0 0 20px rgba(0, 255, 255, 0.05);
-        transition: all 0.3s ease;
-    }
-
-    .control-panel:hover {
-        border-color: var(--neon-cyan);
-        box-shadow: 
-            0 0 30px rgba(37, 225, 237, 0.4),
-            inset 0 0 30px rgba(37, 225, 237, 0.1);
-    }
-
-    .panel-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.8rem;
+    .card-header {
+        display: flex !important;
+        align-items: center !important;
+        margin-bottom: 8px !important;
     }
 
     .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--neon-blue);
-        box-shadow: 0 0 10px var(--neon-blue);
-        animation: pulse-dot 2s ease-in-out infinite;
-        margin-right: 10px;
+        width: 8px !important;
+        height: 8px !important;
+        border-radius: 50% !important;
+        background: var(--neon-blue) !important;
+        box-shadow: 0 0 10px var(--neon-blue) !important;
+        animation: pulse-dot 2s ease-in-out infinite !important;
+        margin-right: 8px !important;
     }
 
     @keyframes pulse-dot {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(1.2); }
+        0%, 100% { opacity: 1 !important; }
+        50% { opacity: 0.5 !important; }
     }
 
-    .panel-title {
-        color: var(--neon-cyan);
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    .card-title {
+        color: var(--neon-cyan) !important;
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
     }
 
-    .panel-content {
-        color: white;
+    .card-value {
+        color: var(--neon-blue) !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 4px !important;
     }
 
-    .data-value {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--neon-blue);
-        margin-bottom: 0.3rem;
+    .card-label {
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-size: 0.6rem !important;
+        font-weight: 300 !important;
     }
 
-    .data-label {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 300;
-    }
-
-    .bottom-hud {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        background: linear-gradient(to top, var(--panel-bg) 0%, transparent 100%);
-        text-align: center;
+    /* Bottom Controls */
+    .bottom-controls {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        padding: 15px !important;
+        text-align: center !important;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%) !important;
+        z-index: 100 !important;
+        pointer-events: none !important;
     }
 
     .instructions {
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 0.9rem;
-        font-weight: 300;
-        pointer-events: auto;
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-size: 0.8rem !important;
+        font-weight: 300 !important;
     }
 
-    .tmz-tooltip {
-        position: absolute;
-        background: var(--panel-bg);
-        border: 1px solid var(--neon-blue);
-        border-radius: 6px;
-        padding: 1rem;
-        color: white;
-        font-size: 0.9rem;
-        box-shadow: var(--glow-blue);
-        backdrop-filter: blur(10px);
-        max-width: 300px;
-        z-index: 200;
-        transform: translate(-50%, -100%);
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+    /* TMZ Tooltip - Appears on tap, doesn't block globe */
+    .tmz-popup {
+        position: absolute !important;
+        background: var(--panel-bg) !important;
+        border: 1px solid var(--neon-blue) !important;
+        border-radius: 8px !important;
+        padding: 15px !important;
+        color: white !important;
+        font-size: 0.8rem !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+        backdrop-filter: blur(15px) !important;
+        max-width: 280px !important;
+        z-index: 200 !important;
+        transform: translate(-50%, -100%) !important;
+        margin-top: -10px !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+        pointer-events: auto !important;
     }
 
-    .tmz-tooltip.visible {
-        opacity: 1;
+    .tmz-popup.visible {
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
-    .tmz-tooltip h4 {
-        color: var(--neon-cyan);
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-        font-weight: 700;
+    .tmz-popup h4 {
+        color: var(--neon-cyan) !important;
+        margin-bottom: 8px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
     }
 
-    .tmz-tooltip .tmz-info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
+    .tmz-popup .close-btn {
+        position: absolute !important;
+        top: 5px !important;
+        right: 10px !important;
+        background: none !important;
+        border: none !important;
+        color: var(--neon-blue) !important;
+        font-size: 1.2rem !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        line-height: 1 !important;
     }
 
-    .tmz-tooltip .info-item {
-        display: flex;
-        flex-direction: column;
+    .tmz-info-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        margin-top: 8px !important;
     }
 
-    .tmz-tooltip .info-label {
-        font-size: 0.7rem;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
+    .info-item {
+        display: flex !important;
+        flex-direction: column !important;
     }
 
-    .tmz-tooltip .info-value {
-        font-size: 0.9rem;
-        color: var(--neon-blue);
-        font-weight: 600;
+    .info-label {
+        font-size: 0.6rem !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        text-transform: uppercase !important;
+        margin-bottom: 2px !important;
     }
 
+    .info-value {
+        font-size: 0.8rem !important;
+        color: var(--neon-blue) !important;
+        font-weight: 600 !important;
+    }
+
+    /* Network indicator */
     .network-status {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin-top: 5px !important;
     }
 
     .network-indicator {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--radiation-green);
-        box-shadow: 0 0 8px var(--radiation-green);
-        animation: pulse-network 1.5s ease-in-out infinite;
+        width: 5px !important;
+        height: 5px !important;
+        border-radius: 50% !important;
+        background: var(--radiation-green) !important;
+        box-shadow: 0 0 5px var(--radiation-green) !important;
+        animation: pulse-network 1.5s ease-in-out infinite !important;
     }
 
     @keyframes pulse-network {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+        0%, 100% { opacity: 1 !important; }
+        50% { opacity: 0.4 !important; }
     }
 
-    .custom-cursor {
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--neon-blue);
-        border-radius: 50%;
-        background: rgba(0, 255, 255, 0.1);
-        pointer-events: none;
-        z-index: 9999;
-        transition: transform 0.1s ease;
-        box-shadow: 0 0 10px var(--neon-blue);
+    .network-text {
+        color: var(--radiation-green) !important;
+        font-size: 0.6rem !important;
+        font-weight: 600 !important;
     }
 
-    .scanner-line {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-        animation: scanner 3s linear infinite;
-        opacity: 0.6;
+    /* Error screen */
+    .error-screen {
+        text-align: center !important;
+        color: #ff4444 !important;
     }
 
-    @keyframes scanner {
-        0% { top: 0; opacity: 0; }
-        10% { opacity: 0.6; }
-        90% { opacity: 0.6; }
-        100% { top: 100%; opacity: 0; }
+    .retry-btn {
+        margin-top: 1.5rem !important;
+        padding: 0.8rem 1.5rem !important;
+        background: var(--neon-blue) !important;
+        color: var(--deep-black) !important;
+        border: none !important;
+        border-radius: 6px !important;
+        cursor: pointer !important;
+        font-family: 'Orbitron', monospace !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+        transition: all 0.3s ease !important;
     }
 
+    .retry-btn:hover {
+        background: var(--neon-cyan) !important;
+        box-shadow: 0 0 30px rgba(37, 225, 237, 0.7) !important;
+    }
+
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-        .control-grid {
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
+        .chronos-title {
+            font-size: 2rem !important;
+            letter-spacing: 2px !important;
         }
         
-        .control-panel {
-            padding: 0.8rem;
+        .left-panel, .right-panel {
+            width: 180px !important;
         }
         
-        .main-title {
-            font-size: 2rem;
-            letter-spacing: 2px;
+        .status-card {
+            padding: 10px !important;
         }
         
-        .tmz-tooltip {
-            max-width: 250px;
-            font-size: 0.8rem;
+        .card-title {
+            font-size: 0.65rem !important;
         }
         
-        .instructions {
-            font-size: 0.8rem;
+        .card-value {
+            font-size: 1rem !important;
+        }
+        
+        .tmz-popup {
+            max-width: 250px !important;
+            padding: 12px !important;
         }
     }
 
+    /* Accessibility */
     @media (prefers-reduced-motion: reduce) {
         * {
             animation: none !important;
@@ -387,7 +392,7 @@
         <div class="loading-spinner"></div>
         <h1 class="system-title">CHRONOS</h1>
         <p class="loading-text">Initializing Temporal Control Matrix...</p>
-        <div style="margin-top: 2rem; font-size: 0.9rem; color: rgba(37, 225, 237, 0.7);">
+        <div style="margin-top: 2rem !important; font-size: 0.8rem !important; color: rgba(37, 225, 237, 0.7) !important;">
             <div>▶ Loading TMZ Network...</div>
             <div>▶ Establishing Quantum Links...</div>
             <div>▶ Calibrating Reality Anchors...</div>
@@ -395,113 +400,114 @@
     </div>
 
 ```
-<div id="globe-container">
-    <div class="scanner-line"></div>
+<div id="globe-container"></div>
+
+<!-- Top Header -->
+<div class="top-header">
+    <h1 class="chronos-title">CHRONOS</h1>
 </div>
 
-<div class="hud-container">
-    <div class="top-hud">
-        <div class="chronos-header">
-            <h1 class="main-title">CHRONOS</h1>
-            <p class="subtitle">TEMPORAL METROPOLITAN ZONE CONTROL SYSTEM</p>
+<!-- Left Panel -->
+<div class="left-panel">
+    <div class="status-card">
+        <div class="card-header">
+            <div class="status-dot"></div>
+            <h3 class="card-title">System Status</h3>
         </div>
-        
-        <div class="control-grid">
-            <div class="control-panel">
-                <div class="panel-header">
-                    <div class="status-dot"></div>
-                    <h3 class="panel-title">System Status</h3>
-                </div>
-                <div class="panel-content">
-                    <div class="data-value" id="utc-time">--:--:--</div>
-                    <div class="data-label">Universal Temporal Control</div>
-                    <div class="network-status">
-                        <div class="network-indicator"></div>
-                        <span style="font-size: 0.8rem; color: var(--radiation-green);">ONLINE</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="control-panel">
-                <div class="panel-header">
-                    <div class="status-dot"></div>
-                    <h3 class="panel-title">Active TMZs</h3>
-                </div>
-                <div class="panel-content">
-                    <div class="data-value" id="tmz-count">8</div>
-                    <div class="data-label">Monitored Zones</div>
-                    <div class="network-status">
-                        <div class="network-indicator"></div>
-                        <span style="font-size: 0.8rem; color: var(--radiation-green);" id="tmz-status">SYNCHRONIZED</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="control-panel">
-                <div class="panel-header">
-                    <div class="status-dot"></div>
-                    <h3 class="panel-title">Chrono-Rail Network</h3>
-                </div>
-                <div class="panel-content">
-                    <div class="data-value" id="rail-connections">28</div>
-                    <div class="data-label">Active Connections</div>
-                    <div class="network-status">
-                        <div class="network-indicator"></div>
-                        <span style="font-size: 0.8rem; color: var(--radiation-green);">OPERATIONAL</span>
-                    </div>
-                </div>
-            </div>
+        <div class="card-value" id="utc-time">--:--:--</div>
+        <div class="card-label">Universal Control</div>
+        <div class="network-status">
+            <div class="network-indicator"></div>
+            <span class="network-text">ONLINE</span>
         </div>
     </div>
-
-    <div class="bottom-hud">
-        <div class="instructions">
-            <span style="color: var(--neon-cyan);">◀ DRAG ▶</span> to rotate • 
-            <span style="color: var(--neon-cyan);">⬉ PINCH ⬊</span> to zoom • 
-            <span style="color: var(--neon-cyan);">▣ TAP</span> TMZs for detailed information
+    
+    <div class="status-card">
+        <div class="card-header">
+            <div class="status-dot"></div>
+            <h3 class="card-title">Active TMZs</h3>
+        </div>
+        <div class="card-value" id="tmz-count">8</div>
+        <div class="card-label">Monitored Zones</div>
+        <div class="network-status">
+            <div class="network-indicator"></div>
+            <span class="network-text">SYNCED</span>
         </div>
     </div>
 </div>
 
-<div id="tmz-tooltip" class="tmz-tooltip">
-    <h4 id="tooltip-title">TMZ Information</h4>
-    <p id="tooltip-description"></p>
-    <div class="tmz-info">
+<!-- Right Panel -->
+<div class="right-panel">
+    <div class="status-card">
+        <div class="card-header">
+            <div class="status-dot"></div>
+            <h3 class="card-title">Chrono-Rail</h3>
+        </div>
+        <div class="card-value" id="rail-connections">28</div>
+        <div class="card-label">Active Links</div>
+        <div class="network-status">
+            <div class="network-indicator"></div>
+            <span class="network-text">OPERATIONAL</span>
+        </div>
+    </div>
+
+    <div class="status-card">
+        <div class="card-header">
+            <div class="status-dot"></div>
+            <h3 class="card-title">Quantum Grid</h3>
+        </div>
+        <div class="card-value" id="quantum-status">100%</div>
+        <div class="card-label">Efficiency</div>
+        <div class="network-status">
+            <div class="network-indicator"></div>
+            <span class="network-text">STABLE</span>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Controls -->
+<div class="bottom-controls">
+    <div class="instructions">
+        <span style="color: var(--neon-cyan) !important;">DRAG</span> to rotate • 
+        <span style="color: var(--neon-cyan) !important;">PINCH</span> to zoom • 
+        <span style="color: var(--neon-cyan) !important;">TAP</span> TMZs for info
+    </div>
+</div>
+
+<!-- TMZ Popup -->
+<div id="tmz-popup" class="tmz-popup">
+    <button class="close-btn" onclick="this.parentElement.classList.remove('visible')">&times;</button>
+    <h4 id="popup-title">TMZ Information</h4>
+    <p id="popup-description" style="margin-bottom: 8px !important; font-size: 0.7rem !important; color: rgba(255,255,255,0.8) !important;"></p>
+    <div class="tmz-info-grid">
         <div class="info-item">
             <span class="info-label">Population</span>
-            <span class="info-value" id="tooltip-population">--</span>
+            <span class="info-value" id="popup-population">--</span>
         </div>
         <div class="info-item">
             <span class="info-label">Status</span>
-            <span class="info-value" id="tooltip-status">--</span>
+            <span class="info-value" id="popup-status">--</span>
         </div>
         <div class="info-item">
             <span class="info-label">Tier Level</span>
-            <span class="info-value" id="tooltip-tier">--</span>
+            <span class="info-value" id="popup-tier">--</span>
         </div>
         <div class="info-item">
             <span class="info-label">UTC Offset</span>
-            <span class="info-value" id="tooltip-offset">--</span>
+            <span class="info-value" id="popup-offset">--</span>
         </div>
     </div>
 </div>
 
-<div class="custom-cursor" id="custom-cursor"></div>
-
-<!-- Three.js with multiple fallbacks -->
+<!-- Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/three@0.150.0/build/three.min.js'"></script>
-
-<!-- Globe.gl with fallbacks -->
 <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.26.0/dist/globe.gl.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/globe.gl@2.26.0/dist/globe.gl.min.js'"></script>
-
-<!-- Hammer.js with fallback -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/hammerjs@2.0.8/hammer.min.js'"></script>
 
 <script>
-    // CHRONOS Earth Control System v2.0
     class CHRONOSEarth {
         constructor() {
             this.globe = null;
@@ -509,86 +515,70 @@
             this.camera = null;
             this.renderer = null;
             this.isGlobeGlAvailable = false;
-            this.tooltip = document.getElementById('tmz-tooltip');
-            this.cursor = document.getElementById('custom-cursor');
+            this.currentPopup = null;
+            this.popupTimeout = null;
             
-            // CHRONOS TMZ Data (Post-Quantum Wars Geography)
-            this.tmzData = this.initializeTMZData();
-            this.railConnections = this.initializeRailNetwork();
-            
-            this.setupCursor();
-            this.waitForLibraries().then(() => {
-                this.init();
-            }).catch(error => {
-                console.error('Libraries failed to load:', error);
-                this.initFallback();
-            });
-        }
-
-        initializeTMZData() {
-            return [
+            // CHRONOS TMZ Data
+            this.tmzData = [
                 {
                     name: "Boston Prime",
                     lat: 42.3601, lng: -71.0589,
-                    population: "4.7M", status: "COMMAND CENTER", tier: "ALPHA",
+                    population: "4.7M", status: "COMMAND", tier: "ALPHA",
                     offset: "-05:00", 
-                    description: "Primary CHRONOS Command Hub. Location of the Master Clock and central temporal control systems."
+                    description: "Primary CHRONOS Command Hub. Master Clock location."
                 },
                 {
                     name: "Neo Beijing",
                     lat: 39.9042, lng: 116.4074,
                     population: "8.2M", status: "OPERATIONAL", tier: "ALPHA",
                     offset: "+08:00",
-                    description: "Asian Command Center. Highest population density with advanced temporal acceleration zones."
+                    description: "Asian Command Center with temporal acceleration zones."
                 },
                 {
                     name: "London Chronos",
                     lat: 51.5074, lng: -0.1278,
                     population: "3.1M", status: "OPERATIONAL", tier: "ALPHA", 
                     offset: "+00:00",
-                    description: "European Temporal Hub. Coordinates continental grid and underwater Chrono-Rail to Africa."
+                    description: "European Hub with underwater Chrono-Rail to Africa."
                 },
                 {
                     name: "Tokyo Temporal",
                     lat: 35.6762, lng: 139.6503,
                     population: "6.8M", status: "OPERATIONAL", tier: "ALPHA",
                     offset: "+09:00",
-                    description: "Pacific Command Center. Advanced quantum agricultural zones and oceanic TMZ platforms."
+                    description: "Pacific Command with oceanic TMZ platforms."
                 },
                 {
                     name: "Sydney Nexus",
                     lat: -33.8688, lng: 151.2093,
                     population: "2.4M", status: "OPERATIONAL", tier: "BETA",
                     offset: "+11:00",
-                    description: "Oceanic Hub. Experimental TMZ designs and climate-controlled environments."
+                    description: "Oceanic Hub with experimental TMZ designs."
                 },
                 {
                     name: "Cairo Quantum",
                     lat: 30.0444, lng: 31.2357,
                     population: "1.8M", status: "OPERATIONAL", tier: "BETA",
                     offset: "+02:00",
-                    description: "African Temporal Center. Desert climate optimization and solar energy harvesting."
+                    description: "African Center with desert climate optimization."
                 },
                 {
                     name: "São Paulo Grid",
                     lat: -23.5505, lng: -46.6333,
                     population: "3.2M", status: "OPERATIONAL", tier: "BETA",
                     offset: "-03:00",
-                    description: "South American Hub. Advanced temporal weather control and atmospheric processing."
+                    description: "South American Hub with weather control systems."
                 },
                 {
                     name: "Mumbai Temporal",
                     lat: 19.0760, lng: 72.8777,
                     population: "5.1M", status: "OPERATIONAL", tier: "BETA",
                     offset: "+05:30",
-                    description: "South Asian Center. High-density population management and monsoon temporal control."
+                    description: "South Asian Center with monsoon temporal control."
                 }
             ];
-        }
 
-        initializeRailNetwork() {
-            // Major Chrono-Rail connections between TMZs
-            return [
+            this.railConnections = [
                 ["Boston Prime", "London Chronos"],
                 ["London Chronos", "Neo Beijing"],
                 ["Neo Beijing", "Tokyo Temporal"],
@@ -599,27 +589,16 @@
                 ["Boston Prime", "São Paulo Grid"],
                 ["São Paulo Grid", "London Chronos"],
                 ["Sydney Nexus", "Tokyo Temporal"],
-                // Cross-Pacific connections
                 ["Tokyo Temporal", "Boston Prime"],
                 ["Sydney Nexus", "São Paulo Grid"],
-                // Continental connections
                 ["Neo Beijing", "Mumbai Temporal"],
                 ["Cairo Quantum", "São Paulo Grid"]
             ];
-        }
-
-        setupCursor() {
-            document.addEventListener('mousemove', (e) => {
-                this.cursor.style.left = e.clientX + 'px';
-                this.cursor.style.top = e.clientY + 'px';
-            });
-
-            document.addEventListener('mousedown', () => {
-                this.cursor.style.transform = 'scale(0.8)';
-            });
-
-            document.addEventListener('mouseup', () => {
-                this.cursor.style.transform = 'scale(1)';
+            
+            this.waitForLibraries().then(() => {
+                this.init();
+            }).catch(error => {
+                this.initFallback();
             });
         }
 
@@ -633,7 +612,6 @@
                     
                     if (typeof THREE !== 'undefined') {
                         this.isGlobeGlAvailable = typeof Globe !== 'undefined';
-                        console.log('Three.js loaded. Globe.gl available:', this.isGlobeGlAvailable);
                         resolve();
                         return;
                     }
@@ -660,14 +638,14 @@
                 
                 this.setupControls();
                 this.startTimeUpdates();
-                this.updateNetworkStats();
+                this.updateStats();
                 
                 setTimeout(() => {
                     this.hideLoading();
-                }, 3000);
+                }, 2500);
                 
             } catch (error) {
-                console.error('Failed to initialize CHRONOS Earth:', error);
+                console.error('Failed to initialize:', error);
                 this.initFallback();
             }
         }
@@ -676,98 +654,84 @@
             const container = document.getElementById('globe-container');
             
             this.globe = Globe()(container)
-                .globeImageUrl(this.generateCHRONOSTexture())
+                .globeImageUrl(this.generateBlackEarthTexture())
                 .bumpImageUrl(null)
                 .backgroundImageUrl(this.generateStarField())
                 .showGraticules(false)
                 .showAtmosphere(true)
                 .atmosphereColor('#00FFFF')
-                .atmosphereAltitude(0.2)
+                .atmosphereAltitude(0.15)
                 .width(window.innerWidth)
                 .height(window.innerHeight);
 
-            // Configure camera
             const camera = this.globe.camera();
-            camera.position.z = this.isMobile() ? 400 : 350;
+            camera.position.z = 300;
 
-            // Auto-rotate
             this.globe.controls().autoRotate = true;
-            this.globe.controls().autoRotateSpeed = 0.3;
+            this.globe.controls().autoRotateSpeed = 0.4;
             this.globe.controls().enableZoom = true;
-            this.globe.controls().enablePan = true;
-            this.globe.controls().minDistance = 180;
-            this.globe.controls().maxDistance = 800;
+            this.globe.controls().minDistance = 150;
+            this.globe.controls().maxDistance = 600;
 
             this.setupTMZVisualization();
             this.setupRailNetwork();
         }
 
         setupThreeJSFallback() {
-            console.log('Using Three.js fallback implementation');
             const container = document.getElementById('globe-container');
             
-            // Scene setup
             this.scene = new THREE.Scene();
-            this.scene.background = new THREE.Color(0x00060e);
+            this.scene.background = new THREE.Color(0x000000);
             
             this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            this.camera.position.z = this.isMobile() ? 400 : 350;
+            this.camera.position.z = 300;
             
-            this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
             this.renderer.setSize(window.innerWidth, window.innerHeight);
-            this.renderer.setClearColor(0x00060e, 1);
             container.appendChild(this.renderer.domElement);
             
-            this.createCHRONOSEarth();
+            this.createBlackEarth();
             this.addLighting();
             this.addTMZMarkers();
             this.addRailConnections();
             this.startAnimation();
         }
 
-        createCHRONOSEarth() {
-            // Create Earth geometry
+        createBlackEarth() {
             const geometry = new THREE.SphereGeometry(100, 64, 32);
             
-            // Create custom CHRONOS texture
+            // Create black earth with blue continent lines
             const canvas = document.createElement('canvas');
             canvas.width = 2048;
             canvas.height = 1024;
             const ctx = canvas.getContext('2d');
             
-            // Dark base
-            const gradient = ctx.createRadialGradient(1024, 512, 0, 1024, 512, 1024);
-            gradient.addColorStop(0, '#2d2d2d');
-            gradient.addColorStop(0.7, '#1a1a1a');
-            gradient.addColorStop(1, '#0a0a0a');
-            ctx.fillStyle = gradient;
+            // Black base
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Add continent shapes with neon blue edges
-            this.drawContinents(ctx);
+            // Draw continent outlines in blue
+            this.drawContinentOutlines(ctx);
             
             const texture = new THREE.CanvasTexture(canvas);
             const material = new THREE.MeshPhongMaterial({
                 map: texture,
-                transparent: true,
-                opacity: 0.9
+                transparent: false
             });
             
             this.earth = new THREE.Mesh(geometry, material);
             this.scene.add(this.earth);
             
-            // Add atmosphere glow
             this.addAtmosphereGlow();
         }
 
-        drawContinents(ctx) {
+        drawContinentOutlines(ctx) {
             ctx.strokeStyle = '#00FFFF';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.shadowColor = '#00FFFF';
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = '#003366';
+            ctx.shadowBlur = 5;
             
-            // North America (post-Quantum Wars - fractured)
+            // North America
             ctx.beginPath();
             ctx.moveTo(300, 400);
             ctx.quadraticCurveTo(400, 350, 500, 400);
@@ -776,7 +740,6 @@
             ctx.quadraticCurveTo(500, 550, 400, 500);
             ctx.quadraticCurveTo(350, 480, 300, 500);
             ctx.closePath();
-            ctx.fill();
             ctx.stroke();
             
             // Europe/Africa
@@ -787,10 +750,9 @@
             ctx.quadraticCurveTo(1200, 650, 1100, 600);
             ctx.quadraticCurveTo(1000, 620, 950, 600);
             ctx.closePath();
-            ctx.fill();
             ctx.stroke();
             
-            // Asia (expanded due to tectonic shifts)
+            // Asia
             ctx.beginPath();
             ctx.moveTo(1300, 300);
             ctx.quadraticCurveTo(1500, 250, 1700, 300);
@@ -798,44 +760,36 @@
             ctx.quadraticCurveTo(1600, 520, 1500, 500);
             ctx.quadraticCurveTo(1350, 480, 1300, 450);
             ctx.closePath();
-            ctx.fill();
             ctx.stroke();
             
-            // Australia/Oceania (new configurations)
+            // Australia
             ctx.beginPath();
             ctx.moveTo(1600, 700);
             ctx.quadraticCurveTo(1700, 680, 1800, 700);
             ctx.quadraticCurveTo(1820, 750, 1800, 800);
             ctx.quadraticCurveTo(1700, 820, 1600, 800);
             ctx.closePath();
-            ctx.fill();
             ctx.stroke();
             
-            // Add TMZ boundaries
-            this.drawTMZBoundaries(ctx);
-        }
-
-        drawTMZBoundaries(ctx) {
-            ctx.strokeStyle = '#25E1ED';
-            ctx.lineWidth = 2;
-            ctx.shadowColor = '#25E1ED';
-            ctx.shadowBlur = 15;
-            
+            // Draw TMZ markers
             this.tmzData.forEach(tmz => {
                 const x = ((tmz.lng + 180) / 360) * 2048;
                 const y = ((90 - tmz.lat) / 180) * 1024;
-                const radius = tmz.tier === 'ALPHA' ? 80 : 60;
                 
-                // Draw TMZ boundary circle
+                // TMZ marker
+                ctx.fillStyle = tmz.tier === 'ALPHA' ? '#FFD700' : '#00FFFF';
+                ctx.shadowColor = ctx.fillStyle;
+                ctx.shadowBlur = 10;
                 ctx.beginPath();
-                ctx.arc(x, y, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                
-                // Add pulsing center dot
-                ctx.fillStyle = '#00FFFF';
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.arc(x, y, tmz.tier === 'ALPHA' ? 8 : 6, 0, 2 * Math.PI);
                 ctx.fill();
+                
+                // TMZ boundary
+                ctx.strokeStyle = tmz.tier === 'ALPHA' ? '#FFD700' : '#25E1ED';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(x, y, tmz.tier === 'ALPHA' ? 40 : 30, 0, 2 * Math.PI);
+                ctx.stroke();
             });
         }
 
@@ -853,10 +807,10 @@
         }
 
         addLighting() {
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
             this.scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0x00FFFF, 0.6);
+            const directionalLight = new THREE.DirectionalLight(0x00FFFF, 0.4);
             directionalLight.position.set(1, 1, 1);
             this.scene.add(directionalLight);
         }
@@ -867,10 +821,9 @@
             this.tmzData.forEach(tmz => {
                 const position = this.latLonToVector3(tmz.lat, tmz.lng, 102);
                 
-                // Create glowing TMZ marker
-                const markerGeometry = new THREE.CylinderGeometry(1, 3, 8, 8);
+                const markerGeometry = new THREE.CylinderGeometry(1, 2, 6, 8);
                 const markerMaterial = new THREE.MeshBasicMaterial({
-                    color: tmz.tier === 'ALPHA' ? 0x00FFFF : 0x25E1ED,
+                    color: tmz.tier === 'ALPHA' ? 0xFFD700 : 0x00FFFF,
                     transparent: true,
                     opacity: 0.9
                 });
@@ -882,6 +835,30 @@
                 
                 this.scene.add(marker);
                 this.tmzMarkers.push(marker);
+            });
+            
+            // Add click detection
+            this.setupClickDetection();
+        }
+
+        setupClickDetection() {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            
+            const canvas = this.renderer.domElement;
+            
+            canvas.addEventListener('click', (event) => {
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, this.camera);
+                const intersects = raycaster.intersectObjects(this.tmzMarkers);
+                
+                if (intersects.length > 0) {
+                    this.showTMZPopup(intersects[0].object.userData, event.clientX, event.clientY);
+                } else {
+                    this.hideTMZPopup();
+                }
             });
         }
 
@@ -900,9 +877,8 @@
             const start = this.latLonToVector3(tmz1.lat, tmz1.lng, 101);
             const end = this.latLonToVector3(tmz2.lat, tmz2.lng, 101);
             
-            // Create curved path
             const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-            mid.normalize().multiplyScalar(120); // Curve outward
+            mid.normalize().multiplyScalar(115);
             
             const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
             const points = curve.getPoints(50);
@@ -911,7 +887,7 @@
             const material = new THREE.LineBasicMaterial({
                 color: 0x00FFFF,
                 transparent: true,
-                opacity: 0.6
+                opacity: 0.7
             });
             
             const line = new THREE.Line(geometry, material);
@@ -921,32 +897,14 @@
         setupTMZVisualization() {
             if (!this.globe) return;
             
-            // Convert TMZ data for Globe.gl
-            const tmzPolygons = this.tmzData.map(tmz => ({
-                type: 'Feature',
-                properties: tmz,
-                geometry: {
-                    type: 'Polygon',
-                    coordinates: [this.createTMZBoundary(tmz.lat, tmz.lng, tmz.tier === 'ALPHA' ? 8 : 6)]
-                }
-            }));
-
-            this.globe
-                .polygonsData(tmzPolygons)
-                .polygonCapColor(d => d.properties.tier === 'ALPHA' ? '#00FFFF' : '#25E1ED')
-                .polygonSideColor(() => 'rgba(0, 255, 255, 0.2)')
-                .polygonStrokeColor(() => '#00FFFF')
-                .polygonAltitude(0.02)
-                .polygonLabel(d => this.createTMZTooltip(d.properties))
-                .onPolygonClick(this.handleTMZClick.bind(this))
-                .onPolygonHover(this.handleTMZHover.bind(this));
-
-            // Add TMZ markers
+            // TMZ points with better visibility
             this.globe
                 .pointsData(this.tmzData)
-                .pointColor(d => d.tier === 'ALPHA' ? '#00FFFF' : '#25E1ED')
-                .pointAltitude(0.03)
-                .pointRadius(d => d.tier === 'ALPHA' ? 0.5 : 0.3);
+                .pointColor(d => d.tier === 'ALPHA' ? '#FFD700' : '#00FFFF')
+                .pointAltitude(0.02)
+                .pointRadius(d => d.tier === 'ALPHA' ? 0.4 : 0.3)
+                .pointLabel(d => this.createTMZTooltip(d))
+                .onPointClick(this.handleTMZClick.bind(this));
         }
 
         setupRailNetwork() {
@@ -961,65 +919,89 @@
                     startLng: tmz1.lng,
                     endLat: tmz2.lat,
                     endLng: tmz2.lng,
-                    color: ['#00FFFF', '#25E1ED']
+                    color: '#00FFFF'
                 };
             });
 
             this.globe
                 .arcsData(arcs)
                 .arcColor('color')
-                .arcDashLength(0.3)
-                .arcDashGap(0.1)
+                .arcDashLength(0.4)
+                .arcDashGap(0.2)
                 .arcDashAnimateTime(2000)
                 .arcStroke(1)
                 .arcsTransitionDuration(1000);
         }
 
-        createTMZBoundary(lat, lng, radius) {
-            const points = [];
-            const numPoints = 32;
-            
-            for (let i = 0; i <= numPoints; i++) {
-                const angle = (i / numPoints) * 2 * Math.PI;
-                const dx = radius * Math.cos(angle);
-                const dy = radius * Math.sin(angle);
-                points.push([lng + dx, lat + dy]);
-            }
-            
-            return points;
-        }
-
         createTMZTooltip(tmz) {
             return `
                 <div style="
-                    background: rgba(0, 6, 14, 0.95);
+                    background: rgba(0, 0, 0, 0.9);
                     border: 1px solid #00FFFF;
                     border-radius: 6px;
-                    padding: 12px;
+                    padding: 10px;
                     color: white;
                     font-family: 'Orbitron', monospace;
-                    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-                    backdrop-filter: blur(10px);
-                    max-width: 250px;
+                    font-size: 0.8rem;
+                    max-width: 200px;
                 ">
-                    <h4 style="color: #25E1ED; margin-bottom: 8px;">${tmz.name}</h4>
-                    <p style="font-size: 0.9rem; margin-bottom: 8px; color: rgba(255,255,255,0.8);">${tmz.description}</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem;">
-                        <div><strong style="color: #00FFFF;">Population:</strong><br>${tmz.population}</div>
-                        <div><strong style="color: #00FFFF;">Status:</strong><br>${tmz.status}</div>
-                        <div><strong style="color: #00FFFF;">Tier:</strong><br>${tmz.tier}</div>
-                        <div><strong style="color: #00FFFF;">UTC:</strong><br>${tmz.offset}</div>
+                    <h4 style="color: #25E1ED; margin-bottom: 5px;">${tmz.name}</h4>
+                    <p style="margin-bottom: 5px; color: #ccc;">${tmz.description}</p>
+                    <div style="font-size: 0.7rem;">
+                        <div><strong>Pop:</strong> ${tmz.population}</div>
+                        <div><strong>Status:</strong> ${tmz.status}</div>
+                        <div><strong>Tier:</strong> ${tmz.tier}</div>
                     </div>
                 </div>
             `;
         }
 
-        handleTMZClick(tmz) {
-            console.log('TMZ clicked:', tmz.properties.name);
+        handleTMZClick(tmz, event) {
+            this.showTMZPopup(tmz, event.pageX, event.pageY);
         }
 
-        handleTMZHover(tmz, prevTmz) {
-            // Handle hover effects if needed
+        showTMZPopup(tmz, x, y) {
+            // Clear any existing timeout
+            if (this.popupTimeout) {
+                clearTimeout(this.popupTimeout);
+            }
+            
+            // Hide current popup
+            this.hideTMZPopup();
+            
+            const popup = document.getElementById('tmz-popup');
+            
+            // Populate data
+            document.getElementById('popup-title').textContent = tmz.name;
+            document.getElementById('popup-description').textContent = tmz.description;
+            document.getElementById('popup-population').textContent = tmz.population;
+            document.getElementById('popup-status').textContent = tmz.status;
+            document.getElementById('popup-tier').textContent = tmz.tier;
+            document.getElementById('popup-offset').textContent = tmz.offset;
+            
+            // Position popup
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
+            
+            // Show popup
+            popup.classList.add('visible');
+            this.currentPopup = popup;
+            
+            // Auto-hide after 5 seconds
+            this.popupTimeout = setTimeout(() => {
+                this.hideTMZPopup();
+            }, 5000);
+        }
+
+        hideTMZPopup() {
+            if (this.currentPopup) {
+                this.currentPopup.classList.remove('visible');
+                this.currentPopup = null;
+            }
+            if (this.popupTimeout) {
+                clearTimeout(this.popupTimeout);
+                this.popupTimeout = null;
+            }
         }
 
         setupControls() {
@@ -1027,35 +1009,34 @@
                 document.querySelector('#globe-container canvas') : 
                 this.renderer.domElement;
             
-            if (!canvas || typeof Hammer === 'undefined') return;
+            if (!canvas) return;
 
-            const hammer = new Hammer(canvas);
-            hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-            hammer.get('pinch').set({ enable: true });
-
-            let momentum = { x: 0, y: 0 };
-
-            hammer.on('panstart', () => {
+            // Touch controls
+            let isRotating = false;
+            
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isRotating = true;
                 if (this.globe) {
                     this.globe.controls().autoRotate = false;
                 }
             });
-
-            hammer.on('pan', (event) => {
-                momentum.x = event.velocityX * 10;
-                momentum.y = event.velocityY * 10;
-            });
-
-            hammer.on('panend', () => {
-                this.applyMomentum(momentum);
+            
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                isRotating = false;
                 setTimeout(() => {
-                    if (this.globe) {
+                    if (this.globe && !isRotating) {
                         this.globe.controls().autoRotate = true;
                     }
                 }, 2000);
             });
 
-            // Handle window resize
+            // Hide popup when touching globe
+            canvas.addEventListener('touchstart', () => {
+                this.hideTMZPopup();
+            });
+
             window.addEventListener('resize', () => {
                 if (this.globe) {
                     this.globe
@@ -1069,21 +1050,6 @@
             });
         }
 
-        applyMomentum(momentum) {
-            const dampening = 0.95;
-            const threshold = 0.5;
-
-            const animate = () => {
-                if (Math.abs(momentum.x) > threshold || Math.abs(momentum.y) > threshold) {
-                    momentum.x *= dampening;
-                    momentum.y *= dampening;
-                    requestAnimationFrame(animate);
-                }
-            };
-
-            animate();
-        }
-
         startAnimation() {
             if (!this.renderer) return;
             
@@ -1091,11 +1057,7 @@
                 requestAnimationFrame(animate);
                 
                 if (this.earth) {
-                    this.earth.rotation.y += 0.002;
-                }
-                
-                if (this.atmosphere) {
-                    this.atmosphere.rotation.y += 0.001;
+                    this.earth.rotation.y += 0.003;
                 }
                 
                 this.renderer.render(this.scene, this.camera);
@@ -1115,7 +1077,7 @@
             setInterval(updateTime, 1000);
         }
 
-        updateNetworkStats() {
+        updateStats() {
             document.getElementById('tmz-count').textContent = this.tmzData.length;
             document.getElementById('rail-connections').textContent = this.railConnections.length;
         }
@@ -1131,21 +1093,16 @@
             );
         }
 
-        generateCHRONOSTexture() {
+        generateBlackEarthTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 2048;
             canvas.height = 1024;
             const ctx = canvas.getContext('2d');
             
-            // Dark gradient base
-            const gradient = ctx.createRadialGradient(1024, 512, 0, 1024, 512, 1024);
-            gradient.addColorStop(0, '#2d2d2d');
-            gradient.addColorStop(0.7, '#1a1a1a');
-            gradient.addColorStop(1, '#0a0a0a');
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            this.drawContinents(ctx);
+            this.drawContinentOutlines(ctx);
             
             return canvas.toDataURL();
         }
@@ -1156,14 +1113,13 @@
             canvas.height = 1024;
             const ctx = canvas.getContext('2d');
             
-            ctx.fillStyle = '#00060e';
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Add stars
-            for (let i = 0; i < 1000; i++) {
+            for (let i = 0; i < 800; i++) {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
-                const size = Math.random() * 2 + 0.5;
+                const size = Math.random() * 1.5 + 0.5;
                 const opacity = Math.random() * 0.8 + 0.2;
                 
                 ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
@@ -1186,39 +1142,22 @@
         initFallback() {
             const loadingScreen = document.getElementById('loading-screen');
             loadingScreen.innerHTML = `
-                <div style="text-align: center;">
-                    <h2 style="color: #ff4444; margin-bottom: 1rem;">CHRONOS SYSTEM ERROR</h2>
-                    <p style="color: #ffaa44; margin-bottom: 1rem;">Failed to initialize 3D Earth system</p>
-                    <p style="color: #ffffff; font-size: 0.9rem;">Please check your internet connection and refresh the page</p>
-                    <button onclick="location.reload()" style="
-                        margin-top: 1rem;
-                        padding: 0.8rem 1.5rem;
-                        background: #00FFFF;
-                        color: #00060e;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-family: 'Orbitron', monospace;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-                    ">RETRY INITIALIZATION</button>
+                <div class="error-screen">
+                    <h2 style="color: #ff4444 !important; margin-bottom: 1rem !important;">CHRONOS SYSTEM ERROR</h2>
+                    <p style="color: #ffaa44 !important; margin-bottom: 1rem !important;">Failed to initialize 3D Earth system</p>
+                    <p style="color: #ffffff !important; font-size: 0.9rem !important;">Please check your connection and refresh</p>
+                    <button class="retry-btn" onclick="location.reload()">RETRY INITIALIZATION</button>
                 </div>
             `;
         }
-
-        isMobile() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
-        }
     }
 
-    // Initialize CHRONOS Earth Control System
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         new CHRONOSEarth();
     });
 
-    // Prevent zoom on double tap for mobile
+    // Prevent zoom on mobile
     document.addEventListener('touchstart', function(event) {
         if (event.touches.length > 1) {
             event.preventDefault();
