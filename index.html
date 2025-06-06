@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>CHRONOS Earth Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+```
+    :root {
+        --neon-blue: #00bfff;
+        --neon-cyan: #00ffff;
+        --dark-bg: #000000;
+        --text-white: #ffffff;
+        --panel-bg: rgba(0, 0, 0, 0.8);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: radial-gradient(ellipse at center, #001122 0%, #000000 70%);
+        font-family: 'Orbitron', monospace;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        color: var(--text-white);
+    }
+
+    #globe-container {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+    }
+
+    .hud-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        pointer-events: none;
+        background: linear-gradient(to bottom, 
+            rgba(0,0,0,0.9) 0%, 
+            rgba(0,0,0,0.3) 50%,
+            transparent 100%);
+        z-index: 100;
+    }
+
+    .hud-overlay > * {
+        pointer-events: auto;
+    }
+
+    .chronos-title {
+        color: var(--text-white);
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: 3px;
+        text-shadow: 
+            0 0 7px var(--text-white),
+            0 0 10px var(--neon-blue),
+            0 0 21px var(--neon-blue),
+            0 0 42px var(--neon-blue);
+        animation: pulse 3s ease-in-out infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes pulse {
+        0%, 100% { 
+            opacity: 1; 
+            text-shadow: 
+                0 0 7px var(--text-white),
+                0 0 10px var(--neon-blue),
+                0 0 21px var(--neon-blue),
+                0 0 42px var(--neon-blue);
+        }
+        50% { 
+            opacity: 0.8; 
+            text-shadow: 
+                0 0 5px var(--text-white),
+                0 0 7px var(--neon-blue),
+                0 0 14px var(--neon-blue),
+                0 0 28px var(--neon-blue);
+        }
+    }
+
+    .control-panel {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .control-card {
+        background: var(--panel-bg);
+        border: 1px solid var(--neon-blue);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 
+            0 0 10px rgba(0, 191, 255, 0.3),
+            inset 0 0 10px rgba(0, 191, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .control-card h3 {
+        color: var(--neon-cyan);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .time-display {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-white);
+    }
+
+    .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--neon-blue);
+        box-shadow: 0 0 5px var(--neon-blue);
+        animation: blink 2s ease-in-out infinite;
+        margin-right: 8px;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    .timezone-tooltip {
+        background: rgba(0, 0, 0, 0.95);
+        border: 1px solid var(--neon-blue);
+        border-radius: 4px;
+        padding: 12px;
+        color: var(--text-white);
+        font-size: 12px;
+        box-shadow: 
+            0 0 15px rgba(0, 191, 255, 0.5),
+            inset 0 0 10px rgba(0, 191, 255, 0.1);
+        backdrop-filter: blur(5px);
+        max-width: 200px;
+    }
+
+    .timezone-tooltip h4 {
+        color: var(--neon-cyan);
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .bottom-hud {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to top, 
+            rgba(0,0,0,0.9) 0%, 
+            transparent 100%);
+        pointer-events: none;
+    }
+
+    .instructions {
+        text-align: center;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+        pointer-events: auto;
+    }
+
+    .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--dark-bg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 2px solid transparent;
+        border-top: 2px solid var(--neon-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .connection-line {
+        stroke: var(--neon-cyan);
+        stroke-width: 2;
+        opacity: 0.7;
+        filter: drop-shadow(0 0 3px var(--neon-cyan));
+    }
+
+    @media (max-width: 768px) {
+        .chronos-title {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .control-panel {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+
+        .control-card {
+            padding: 0.8rem;
+        }
+
+        .hud-overlay {
+            padding: 0.5rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <h2 class="chronos-title">INITIALIZING CHRONOS</h2>
+        <p style="color: var(--neon-cyan); font-size: 0.9rem;">Loading Earth Control Matrix...</p>
+    </div>
+
+```
+<div id="globe-container"></div>
+
+<div class="hud-overlay">
+    <h1 class="chronos-title">CHRONOS</h1>
+    <div class="control-panel">
+        <div class="control-card">
+            <h3><span class="status-indicator"></span>System Status</h3>
+            <div class="time-display" id="utc-time">Loading...</div>
+            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                Universal Temporal Control
+            </div>
+        </div>
+        <div class="control-card">
+            <h3>Active Zones</h3>
+            <div class="time-display" id="zone-count">0</div>
+            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                Monitored Regions
+            </div>
+        </div>
+        <div class="control-card">
+            <h3>Transport Links</h3>
+            <div class="time-display" id="transport-count">0</div>
+            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                Active Connections
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-hud">
+    <div class="instructions">
+        Drag to rotate • Pinch to zoom • Tap zones for information
+    </div>
+</div>
+
+<script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
+<script src="https://unpkg.com/globe.gl@2.26.0/dist/globe.gl.min.js"></script>
+<script src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js"></script>
+
+<script>
+    class ChronosEarth {
+        constructor() {
+            this.globe = null;
+            this.timeZones = [];
+            this.connections = [];
+            this.isLoading = true;
+            this.autoRotate = true;
+            this.currentHover = null;
+            
+            this.timeZoneData = this.generateTimeZoneData();
+            this.transportHubs = this.generateTransportHubs();
+            
+            this.init();
+        }
+
+        async init() {
+            try {
+                this.setupGlobe();
+                this.setupTimeZones();
+                this.setupTransportConnections();
+                this.setupControls();
+                this.startTimeUpdates();
+                
+                // Simulate loading time for effect
+                setTimeout(() => {
+                    this.hideLoading();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Failed to initialize CHRONOS Earth:', error);
+            }
+        }
+
+        setupGlobe() {
+            const container = document.getElementById('globe-container');
+            
+            this.globe = Globe()(container)
+                .globeImageUrl('data:image/svg+xml;base64,' + this.generateEarthTexture())
+                .bumpImageUrl(null)
+                .backgroundImageUrl('data:image/svg+xml;base64,' + this.generateStarField())
+                .showGraticules(false)
+                .showAtmosphere(true)
+                .atmosphereColor('#00bfff')
+                .atmosphereAltitude(0.15)
+                .width(window.innerWidth)
+                .height(window.innerHeight);
+
+            // Set camera position
+            const camera = this.globe.camera();
+            camera.position.z = this.isMobile() ? 400 : 350;
+
+            // Auto-rotate
+            this.globe.controls().autoRotate = true;
+            this.globe.controls().autoRotateSpeed = 0.5;
+            this.globe.controls().enableZoom = true;
+            this.globe.controls().enablePan = true;
+            this.globe.controls().minDistance = 200;
+            this.globe.controls().maxDistance = 800;
+        }
+
+        setupTimeZones() {
+            this.globe
+                .polygonsData(this.timeZoneData)
+                .polygonCapColor(d => this.getTimeZoneColor(d.utcOffset))
+                .polygonSideColor(() => 'rgba(0, 191, 255, 0.1)')
+                .polygonStrokeColor(() => '#00bfff')
+                .polygonAltitude(0.01)
+                .polygonLabel(d => this.createTimeZoneTooltip(d))
+                .onPolygonClick(this.handleTimeZoneClick.bind(this))
+                .onPolygonHover(this.handleTimeZoneHover.bind(this));
+
+            document.getElementById('zone-count').textContent = this.timeZoneData.length;
+        }
+
+        setupTransportConnections() {
+            const arcs = [];
+            
+            // Create connections between major hubs
+            for (let i = 0; i < this.transportHubs.length; i++) {
+                for (let j = i + 1; j < this.transportHubs.length; j++) {
+                    arcs.push({
+                        startLat: this.transportHubs[i].lat,
+                        startLng: this.transportHubs[i].lng,
+                        endLat: this.transportHubs[j].lat,
+                        endLng: this.transportHubs[j].lng,
+                        color: ['#00bfff', '#00ffff']
+                    });
+                }
+            }
+
+            this.globe
+                .arcsData(arcs)
+                .arcColor('color')
+                .arcDashLength(0.4)
+                .arcDashGap(0.2)
+                .arcDashAnimateTime(2000)
+                .arcStroke(0.8)
+                .arcsTransitionDuration(1000);
+
+            // Add hub points
+            this.globe
+                .pointsData(this.transportHubs)
+                .pointColor(() => '#00ffff')
+                .pointAltitude(0.02)
+                .pointRadius(0.3)
+                .pointLabel(d => `<div class="timezone-tooltip"><h4>${d.name}</h4><p>Major Transport Hub</p></div>`);
+
+            document.getElementById('transport-count').textContent = arcs.length;
+        }
+
+        setupControls() {
+            const canvas = document.querySelector('#globe-container canvas');
+            if (!canvas) return;
+
+            const hammer = new Hammer(canvas);
+            hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+            hammer.get('pinch').set({ enable: true });
+
+            let momentum = { x: 0, y: 0 };
+
+            hammer.on('panstart', () => {
+                this.globe.controls().autoRotate = false;
+            });
+
+            hammer.on('pan', (event) => {
+                const sensitivity = 0.3;
+                momentum.x = event.velocityX * 20;
+                momentum.y = event.velocityY * 20;
+            });
+
+            hammer.on('panend', () => {
+                this.applyMomentum(momentum);
+                setTimeout(() => {
+                    this.globe.controls().autoRotate = true;
+                }, 3000);
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                this.globe
+                    .width(window.innerWidth)
+                    .height(window.innerHeight);
+            });
+        }
+
+        applyMomentum(momentum) {
+            const dampening = 0.95;
+            const threshold = 0.5;
+
+            const animate = () => {
+                if (Math.abs(momentum.x) > threshold || Math.abs(momentum.y) > threshold) {
+                    momentum.x *= dampening;
+                    momentum.y *= dampening;
+                    requestAnimationFrame(animate);
+                } else {
+                    setTimeout(() => {
+                        this.globe.controls().autoRotate = true;
+                    }, 1000);
+                }
+            };
+
+            animate();
+        }
+
+        startTimeUpdates() {
+            const updateTime = () => {
+                const now = new Date();
+                const utcTime = now.toUTCString().split(' ')[4];
+                document.getElementById('utc-time').textContent = utcTime;
+            };
+
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        generateTimeZoneData() {
+            const zones = [];
+            const zoneNames = [
+                'Pacific/Honolulu', 'America/Anchorage', 'America/Los_Angeles',
+                'America/Denver', 'America/Chicago', 'America/New_York',
+                'Europe/London', 'Europe/Paris', 'Europe/Moscow',
+                'Asia/Dubai', 'Asia/Kolkata', 'Asia/Shanghai',
+                'Asia/Tokyo', 'Australia/Sydney', 'Pacific/Auckland'
+            ];
+
+            zoneNames.forEach((name, index) => {
+                const utcOffset = -12 + Math.floor(index * 24 / zoneNames.length);
+                zones.push({
+                    type: 'Feature',
+                    properties: {
+                        name: name,
+                        utcOffset: utcOffset,
+                        id: `zone_${index}`
+                    },
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: [this.generateZonePolygon(index, zoneNames.length)]
+                    }
+                });
+            });
+
+            return zones;
+        }
+
+        generateZonePolygon(index, total) {
+            const longitudeWidth = 360 / total;
+            const startLng = -180 + (index * longitudeWidth);
+            const endLng = startLng + longitudeWidth;
+
+            return [
+                [startLng, -60],
+                [endLng, -60],
+                [endLng, 75],
+                [startLng, 75],
+                [startLng, -60]
+            ];
+        }
+
+        generateTransportHubs() {
+            return [
+                { lat: 40.7128, lng: -74.0060, name: 'New York Hub' },
+                { lat: 51.5074, lng: -0.1278, name: 'London Hub' },
+                { lat: 35.6762, lng: 139.6503, name: 'Tokyo Hub' },
+                { lat: -33.8688, lng: 151.2093, name: 'Sydney Hub' },
+                { lat: 55.7558, lng: 37.6176, name: 'Moscow Hub' },
+                { lat: 39.9042, lng: 116.4074, name: 'Beijing Hub' }
+            ];
+        }
+
+        getTimeZoneColor(utcOffset) {
+            const colors = {
+                '-12': '#000080', '-11': '#191970', '-10': '#0000CD',
+                '-9': '#0000FF', '-8': '#4169E1', '-7': '#6495ED',
+                '-6': '#87CEEB', '-5': '#87CEFA', '-4': '#00BFFF',
+                '-3': '#1E90FF', '-2': '#0099FF', '-1': '#0080FF',
+                '0': '#00bfff',
+                '1': '#FF6347', '2': '#FF4500', '3': '#FF8C00',
+                '4': '#FFA500', '5': '#FFB347', '6': '#FFCCCB',
+                '7': '#FFE4B5', '8': '#FFEFD5', '9': '#FFF8DC',
+                '10': '#FFFACD', '11': '#FFFFE0', '12': '#FFFFF0'
+            };
+            return colors[utcOffset] || '#00bfff';
+        }
+
+        createTimeZoneTooltip(zone) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                timeZone: zone.properties.name,
+                hour12: false
+            });
+
+            return `
+                <div class="timezone-tooltip">
+                    <h4>${zone.properties.name}</h4>
+                    <p><strong>Time:</strong> ${timeString}</p>
+                    <p><strong>UTC Offset:</strong> ${zone.properties.utcOffset}</p>
+                    <p><strong>Status:</strong> <span style="color: #00ffff;">MONITORED</span></p>
+                </div>
+            `;
+        }
+
+        handleTimeZoneClick(zone, event) {
+            console.log('Time zone clicked:', zone.properties.name);
+            // Could expand this to show detailed zone information
+        }
+
+        handleTimeZoneHover(zone, prevZone) {
+            this.currentHover = zone;
+            // Could add hover effects here
+        }
+
+        generateEarthTexture() {
+            const svg = `
+                <svg width="1024" height="512" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#001a33;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+                        </radialGradient>
+                    </defs>
+                    <rect width="1024" height="512" fill="url(#earthGrad)"/>
+                    <g opacity="0.3">
+                        ${this.generateContinentShapes()}
+                    </g>
+                </svg>
+            `;
+            return btoa(svg);
+        }
+
+        generateContinentShapes() {
+            // Simplified continent shapes for dark earth effect
+            return `
+                <path d="M150,200 Q200,180 250,200 Q300,220 350,200 L350,250 Q300,270 250,250 Q200,270 150,250 Z" fill="#003366"/>
+                <path d="M400,150 Q500,130 600,150 Q650,170 700,150 L700,300 Q650,320 600,300 Q500,320 400,300 Z" fill="#003366"/>
+                <path d="M750,180 Q850,160 950,180 Q980,200 1000,180 L1000,280 Q980,300 950,280 Q850,300 750,280 Z" fill="#003366"/>
+            `;
+        }
+
+        generateStarField() {
+            const stars = [];
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * 1024;
+                const y = Math.random() * 512;
+                const size = Math.random() * 2 + 0.5;
+                const opacity = Math.random() * 0.8 + 0.2;
+                stars.push(`<circle cx="${x}" cy="${y}" r="${size}" fill="#ffffff" opacity="${opacity}"/>`);
+            }
+
+            const svg = `
+                <svg width="1024" height="512" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="1024" height="512" fill="#000011"/>
+                    ${stars.join('')}
+                </svg>
+            `;
+            return btoa(svg);
+        }
+
+        hideLoading() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+
+        isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        }
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+        new ChronosEarth();
+    });
+
+    // Prevent zoom on double tap for mobile
+    document.addEventListener('touchstart', function(event) {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    });
+
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+</script>
+```
+
+</body>
+</html>
