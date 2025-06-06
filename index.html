@@ -288,9 +288,34 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
-<script src="https://unpkg.com/globe.gl@2.26.0/dist/globe.gl.min.js"></script>
-<script src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js"></script>
+<!-- Three.js with fallback -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
+        onerror="this.onerror=null;this.src='https://unpkg.com/three@0.150.0/build/three.min.js'"></script>
+
+<!-- Globe.gl with multiple fallbacks -->
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2.26.0/dist/globe.gl.min.js" 
+        onerror="this.onerror=null;this.src='https://unpkg.com/globe.gl@2.26.0/dist/globe.gl.min.js'"></script>
+
+<!-- Hammer.js with fallback -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
+        onerror="this.onerror=null;this.src='https://unpkg.com/hammerjs@2.0.8/hammer.min.js'"></script>
+
+<!-- Backup: Local Three.js Globe implementation if CDNs fail -->
+<script>
+    // Check if libraries loaded, provide fallback
+    window.addEventListener('load', function() {
+        if (typeof THREE === 'undefined') {
+            console.error('Three.js failed to load');
+            document.getElementById('loading-screen').innerHTML = 
+                '<h2 style="color: #ff4444;">Failed to load 3D libraries</h2><p>Please check your internet connection</p>';
+            return;
+        }
+        if (typeof Globe === 'undefined') {
+            console.warn('Globe.gl failed to load, using fallback implementation');
+            // We'll provide a fallback in the main script
+        }
+    });
+</script>
 
 <script>
     class ChronosEarth {
@@ -305,14 +330,52 @@
             this.timeZoneData = this.generateTimeZoneData();
             this.transportHubs = this.generateTransportHubs();
             
-            this.init();
+            // Wait for libraries to load before initializing
+            this.waitForLibraries().then(() => {
+                this.init();
+            }).catch(error => {
+                console.error('Libraries failed to load:', error);
+                this.showError();
+            });
+        }
+
+        async waitForLibraries() {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
+                const maxAttempts = 50; // 5 seconds
+                
+                const checkLibraries = () => {
+                    attempts++;
+                    
+                    if (typeof THREE !== 'undefined' && (typeof Globe !== 'undefined' || attempts > 30)) {
+                        console.log('Libraries loaded successfully');
+                        resolve();
+                        return;
+                    }
+                    
+                    if (attempts >= maxAttempts) {
+                        reject(new Error('Libraries failed to load after 5 seconds'));
+                        return;
+                    }
+                    
+                    setTimeout(checkLibraries, 100);
+                };
+                
+                checkLibraries();
+            });
         }
 
         async init() {
             try {
-                this.setupGlobe();
-                this.setupTimeZones();
-                this.setupTransportConnections();
+                if (typeof Globe === 'undefined') {
+                    console.warn('Globe.gl not available, using fallback implementation');
+                    this.setupFallbackGlobe();
+                } else {
+                    this.setupGlobe();
+                    this.setupTimeZones();
+                    this.setupTransportConnections();
+                }
+                
                 this.setupControls();
                 this.startTimeUpdates();
                 
@@ -323,7 +386,129 @@
                 
             } catch (error) {
                 console.error('Failed to initialize CHRONOS Earth:', error);
+                this.showError();
             }
+        }
+
+        setupFallbackGlobe() {
+            // Fallback implementation using pure Three.js
+            const container = document.getElementById('globe-container');
+            
+            // Create scene, camera, and renderer
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000011, 1);
+            container.appendChild(renderer.domElement);
+            
+            // Create Earth sphere
+            const geometry = new THREE.SphereGeometry(100, 64, 32);
+            
+            // Create Earth material with procedural texture
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw gradient background
+            const gradient = ctx.createRadialGradient(512, 256, 0, 512, 256, 512);
+            gradient.addColorStop(0, '#004080');
+            gradient.addColorStop(0.5, '#002040');
+            gradient.addColorStop(1, '#000020');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1024, 512);
+            
+            // Add some continent-like shapes
+            ctx.fillStyle = '#006699';
+            ctx.beginPath();
+            ctx.ellipse(200, 200, 80, 40, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(600, 150, 120, 60, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(800, 300, 100, 50, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.MeshPhongMaterial({ 
+                map: texture,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            const earth = new THREE.Mesh(geometry, material);
+            scene.add(earth);
+            
+            // Add atmosphere
+            const atmosphereGeometry = new THREE.SphereGeometry(105, 64, 32);
+            const atmosphereMaterial = new THREE.MeshBasicMaterial({
+                color: 0x00bfff,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+            scene.add(atmosphere);
+            
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Position camera
+            camera.position.z = this.isMobile() ? 400 : 350;
+            
+            // Animation loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+                
+                if (this.autoRotate) {
+                    earth.rotation.y += 0.005;
+                    atmosphere.rotation.y += 0.005;
+                }
+                
+                renderer.render(scene, camera);
+            };
+            animate();
+            
+            // Store references for control
+            this.fallbackScene = { scene, camera, renderer, earth, atmosphere };
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            console.log('Fallback 3D globe initialized');
+        }
+
+        showError() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: #ff4444; margin-bottom: 1rem;">CHRONOS SYSTEM ERROR</h2>
+                    <p style="color: #ffaa44; margin-bottom: 1rem;">Failed to initialize 3D Earth system</p>
+                    <p style="color: #ffffff; font-size: 0.9rem;">Please check your internet connection and refresh the page</p>
+                    <button onclick="location.reload()" style="
+                        margin-top: 1rem;
+                        padding: 0.5rem 1rem;
+                        background: #00bfff;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-family: 'Orbitron', monospace;
+                    ">RETRY INITIALIZATION</button>
+                </div>
+            `;
         }
 
         setupGlobe() {
