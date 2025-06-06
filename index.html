@@ -4,17 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-    <title>CHRONOS Earth Control</title>
+    <title>CHRONOS Earth Control System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
 
 ```
     :root {
-        --neon-blue: #00bfff;
-        --neon-cyan: #00ffff;
-        --dark-bg: #000000;
-        --text-white: #ffffff;
-        --panel-bg: rgba(0, 0, 0, 0.8);
+        --neon-blue: #00FFFF;
+        --neon-cyan: #25E1ED;
+        --electric-blue: #0080FF;
+        --temporal-gold: #C8B029;
+        --quantum-purple: #BD00FF;
+        --deep-black: #00060e;
+        --charcoal: #1A1A1A;
+        --radiation-green: #00FF9F;
+        --panel-bg: rgba(0, 6, 14, 0.9);
+        --glow-blue: 0 0 20px #00FFFF, 0 0 40px #25E1ED;
     }
 
     * {
@@ -24,158 +29,21 @@
     }
 
     body {
-        background: radial-gradient(ellipse at center, #001122 0%, #000000 70%);
+        background: radial-gradient(ellipse at center, #001122 0%, var(--deep-black) 70%);
         font-family: 'Orbitron', monospace;
         overflow: hidden;
         position: fixed;
         width: 100%;
         height: 100%;
-        color: var(--text-white);
+        color: var(--neon-blue);
+        cursor: none;
     }
 
     #globe-container {
         width: 100%;
         height: 100%;
         touch-action: none;
-    }
-
-    .hud-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        pointer-events: none;
-        background: linear-gradient(to bottom, 
-            rgba(0,0,0,0.9) 0%, 
-            rgba(0,0,0,0.3) 50%,
-            transparent 100%);
-        z-index: 100;
-    }
-
-    .hud-overlay > * {
-        pointer-events: auto;
-    }
-
-    .chronos-title {
-        color: var(--text-white);
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: 900;
-        text-align: center;
-        letter-spacing: 3px;
-        text-shadow: 
-            0 0 7px var(--text-white),
-            0 0 10px var(--neon-blue),
-            0 0 21px var(--neon-blue),
-            0 0 42px var(--neon-blue);
-        animation: pulse 3s ease-in-out infinite;
-        margin-bottom: 1rem;
-    }
-
-    @keyframes pulse {
-        0%, 100% { 
-            opacity: 1; 
-            text-shadow: 
-                0 0 7px var(--text-white),
-                0 0 10px var(--neon-blue),
-                0 0 21px var(--neon-blue),
-                0 0 42px var(--neon-blue);
-        }
-        50% { 
-            opacity: 0.8; 
-            text-shadow: 
-                0 0 5px var(--text-white),
-                0 0 7px var(--neon-blue),
-                0 0 14px var(--neon-blue),
-                0 0 28px var(--neon-blue);
-        }
-    }
-
-    .control-panel {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .control-card {
-        background: var(--panel-bg);
-        border: 1px solid var(--neon-blue);
-        border-radius: 8px;
-        padding: 1rem;
-        box-shadow: 
-            0 0 10px rgba(0, 191, 255, 0.3),
-            inset 0 0 10px rgba(0, 191, 255, 0.1);
-        backdrop-filter: blur(10px);
-    }
-
-    .control-card h3 {
-        color: var(--neon-cyan);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .time-display {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text-white);
-    }
-
-    .status-indicator {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--neon-blue);
-        box-shadow: 0 0 5px var(--neon-blue);
-        animation: blink 2s ease-in-out infinite;
-        margin-right: 8px;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-    }
-
-    .timezone-tooltip {
-        background: rgba(0, 0, 0, 0.95);
-        border: 1px solid var(--neon-blue);
-        border-radius: 4px;
-        padding: 12px;
-        color: var(--text-white);
-        font-size: 12px;
-        box-shadow: 
-            0 0 15px rgba(0, 191, 255, 0.5),
-            inset 0 0 10px rgba(0, 191, 255, 0.1);
-        backdrop-filter: blur(5px);
-        max-width: 200px;
-    }
-
-    .timezone-tooltip h4 {
-        color: var(--neon-cyan);
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-
-    .bottom-hud {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        background: linear-gradient(to top, 
-            rgba(0,0,0,0.9) 0%, 
-            transparent 100%);
-        pointer-events: none;
-    }
-
-    .instructions {
-        text-align: center;
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
-        pointer-events: auto;
+        position: relative;
     }
 
     .loading-screen {
@@ -184,23 +52,24 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: var(--dark-bg);
+        background: var(--deep-black);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 1000;
-        transition: opacity 0.5s ease-out;
+        transition: opacity 0.8s ease-out;
     }
 
     .loading-spinner {
-        width: 60px;
-        height: 60px;
-        border: 2px solid transparent;
-        border-top: 2px solid var(--neon-blue);
+        width: 80px;
+        height: 80px;
+        border: 3px solid transparent;
+        border-top: 3px solid var(--neon-blue);
         border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-bottom: 1rem;
+        animation: spin 1.5s linear infinite;
+        margin-bottom: 2rem;
+        box-shadow: var(--glow-blue);
     }
 
     @keyframes spin {
@@ -208,30 +77,298 @@
         100% { transform: rotate(360deg); }
     }
 
-    .connection-line {
-        stroke: var(--neon-cyan);
-        stroke-width: 2;
-        opacity: 0.7;
-        filter: drop-shadow(0 0 3px var(--neon-cyan));
+    .system-title {
+        color: var(--neon-blue);
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: 4px;
+        text-shadow: var(--glow-blue);
+        animation: pulse-title 3s ease-in-out infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes pulse-title {
+        0%, 100% { 
+            opacity: 1; 
+            text-shadow: var(--glow-blue);
+        }
+        50% { 
+            opacity: 0.7; 
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+    }
+
+    .loading-text {
+        color: var(--neon-cyan);
+        font-size: 1.2rem;
+        font-weight: 300;
+        text-align: center;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hud-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    .top-hud {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to bottom, var(--panel-bg) 0%, transparent 100%);
+    }
+
+    .chronos-header {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .main-title {
+        color: var(--neon-blue);
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-shadow: var(--glow-blue);
+        animation: glow-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+        0%, 100% { text-shadow: var(--glow-blue); }
+        50% { text-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-cyan); }
+    }
+
+    .subtitle {
+        color: var(--neon-cyan);
+        font-size: 0.9rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        margin-top: 0.5rem;
+    }
+
+    .control-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+        pointer-events: auto;
+    }
+
+    .control-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--neon-blue);
+        border-radius: 8px;
+        padding: 1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 
+            0 0 20px rgba(0, 255, 255, 0.2),
+            inset 0 0 20px rgba(0, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .control-panel:hover {
+        border-color: var(--neon-cyan);
+        box-shadow: 
+            0 0 30px rgba(37, 225, 237, 0.4),
+            inset 0 0 30px rgba(37, 225, 237, 0.1);
+    }
+
+    .panel-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+    }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--neon-blue);
+        box-shadow: 0 0 10px var(--neon-blue);
+        animation: pulse-dot 2s ease-in-out infinite;
+        margin-right: 10px;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.2); }
+    }
+
+    .panel-title {
+        color: var(--neon-cyan);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .panel-content {
+        color: white;
+    }
+
+    .data-value {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--neon-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .data-label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 300;
+    }
+
+    .bottom-hud {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to top, var(--panel-bg) 0%, transparent 100%);
+        text-align: center;
+    }
+
+    .instructions {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        font-weight: 300;
+        pointer-events: auto;
+    }
+
+    .tmz-tooltip {
+        position: absolute;
+        background: var(--panel-bg);
+        border: 1px solid var(--neon-blue);
+        border-radius: 6px;
+        padding: 1rem;
+        color: white;
+        font-size: 0.9rem;
+        box-shadow: var(--glow-blue);
+        backdrop-filter: blur(10px);
+        max-width: 300px;
+        z-index: 200;
+        transform: translate(-50%, -100%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .tmz-tooltip.visible {
+        opacity: 1;
+    }
+
+    .tmz-tooltip h4 {
+        color: var(--neon-cyan);
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .tmz-tooltip .tmz-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .tmz-tooltip .info-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tmz-tooltip .info-label {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+    }
+
+    .tmz-tooltip .info-value {
+        font-size: 0.9rem;
+        color: var(--neon-blue);
+        font-weight: 600;
+    }
+
+    .network-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .network-indicator {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--radiation-green);
+        box-shadow: 0 0 8px var(--radiation-green);
+        animation: pulse-network 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-network {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    .custom-cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--neon-blue);
+        border-radius: 50%;
+        background: rgba(0, 255, 255, 0.1);
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.1s ease;
+        box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .scanner-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        animation: scanner 3s linear infinite;
+        opacity: 0.6;
+    }
+
+    @keyframes scanner {
+        0% { top: 0; opacity: 0; }
+        10% { opacity: 0.6; }
+        90% { opacity: 0.6; }
+        100% { top: 100%; opacity: 0; }
     }
 
     @media (max-width: 768px) {
-        .chronos-title {
-            font-size: 1.5rem;
-            letter-spacing: 2px;
+        .control-grid {
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
         }
         
         .control-panel {
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
-        }
-
-        .control-card {
             padding: 0.8rem;
         }
-
-        .hud-overlay {
-            padding: 0.5rem;
+        
+        .main-title {
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        .tmz-tooltip {
+            max-width: 250px;
+            font-size: 0.8rem;
+        }
+        
+        .instructions {
+            font-size: 0.8rem;
         }
     }
 
@@ -248,51 +385,114 @@
 <body>
     <div id="loading-screen" class="loading-screen">
         <div class="loading-spinner"></div>
-        <h2 class="chronos-title">INITIALIZING CHRONOS</h2>
-        <p style="color: var(--neon-cyan); font-size: 0.9rem;">Loading Earth Control Matrix...</p>
+        <h1 class="system-title">CHRONOS</h1>
+        <p class="loading-text">Initializing Temporal Control Matrix...</p>
+        <div style="margin-top: 2rem; font-size: 0.9rem; color: rgba(37, 225, 237, 0.7);">
+            <div>▶ Loading TMZ Network...</div>
+            <div>▶ Establishing Quantum Links...</div>
+            <div>▶ Calibrating Reality Anchors...</div>
+        </div>
     </div>
 
 ```
-<div id="globe-container"></div>
+<div id="globe-container">
+    <div class="scanner-line"></div>
+</div>
 
-<div class="hud-overlay">
-    <h1 class="chronos-title">CHRONOS</h1>
-    <div class="control-panel">
-        <div class="control-card">
-            <h3><span class="status-indicator"></span>System Status</h3>
-            <div class="time-display" id="utc-time">Loading...</div>
-            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
-                Universal Temporal Control
+<div class="hud-container">
+    <div class="top-hud">
+        <div class="chronos-header">
+            <h1 class="main-title">CHRONOS</h1>
+            <p class="subtitle">TEMPORAL METROPOLITAN ZONE CONTROL SYSTEM</p>
+        </div>
+        
+        <div class="control-grid">
+            <div class="control-panel">
+                <div class="panel-header">
+                    <div class="status-dot"></div>
+                    <h3 class="panel-title">System Status</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="data-value" id="utc-time">--:--:--</div>
+                    <div class="data-label">Universal Temporal Control</div>
+                    <div class="network-status">
+                        <div class="network-indicator"></div>
+                        <span style="font-size: 0.8rem; color: var(--radiation-green);">ONLINE</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <div class="panel-header">
+                    <div class="status-dot"></div>
+                    <h3 class="panel-title">Active TMZs</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="data-value" id="tmz-count">8</div>
+                    <div class="data-label">Monitored Zones</div>
+                    <div class="network-status">
+                        <div class="network-indicator"></div>
+                        <span style="font-size: 0.8rem; color: var(--radiation-green);" id="tmz-status">SYNCHRONIZED</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <div class="panel-header">
+                    <div class="status-dot"></div>
+                    <h3 class="panel-title">Chrono-Rail Network</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="data-value" id="rail-connections">28</div>
+                    <div class="data-label">Active Connections</div>
+                    <div class="network-status">
+                        <div class="network-indicator"></div>
+                        <span style="font-size: 0.8rem; color: var(--radiation-green);">OPERATIONAL</span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="control-card">
-            <h3>Active Zones</h3>
-            <div class="time-display" id="zone-count">0</div>
-            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
-                Monitored Regions
-            </div>
-        </div>
-        <div class="control-card">
-            <h3>Transport Links</h3>
-            <div class="time-display" id="transport-count">0</div>
-            <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
-                Active Connections
-            </div>
+    </div>
+
+    <div class="bottom-hud">
+        <div class="instructions">
+            <span style="color: var(--neon-cyan);">◀ DRAG ▶</span> to rotate • 
+            <span style="color: var(--neon-cyan);">⬉ PINCH ⬊</span> to zoom • 
+            <span style="color: var(--neon-cyan);">▣ TAP</span> TMZs for detailed information
         </div>
     </div>
 </div>
 
-<div class="bottom-hud">
-    <div class="instructions">
-        Drag to rotate • Pinch to zoom • Tap zones for information
+<div id="tmz-tooltip" class="tmz-tooltip">
+    <h4 id="tooltip-title">TMZ Information</h4>
+    <p id="tooltip-description"></p>
+    <div class="tmz-info">
+        <div class="info-item">
+            <span class="info-label">Population</span>
+            <span class="info-value" id="tooltip-population">--</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="info-value" id="tooltip-status">--</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Tier Level</span>
+            <span class="info-value" id="tooltip-tier">--</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">UTC Offset</span>
+            <span class="info-value" id="tooltip-offset">--</span>
+        </div>
     </div>
 </div>
 
-<!-- Three.js with fallback -->
+<div class="custom-cursor" id="custom-cursor"></div>
+
+<!-- Three.js with multiple fallbacks -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/three@0.150.0/build/three.min.js'"></script>
 
-<!-- Globe.gl with multiple fallbacks -->
+<!-- Globe.gl with fallbacks -->
 <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.26.0/dist/globe.gl.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/globe.gl@2.26.0/dist/globe.gl.min.js'"></script>
 
@@ -300,61 +500,146 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
         onerror="this.onerror=null;this.src='https://unpkg.com/hammerjs@2.0.8/hammer.min.js'"></script>
 
-<!-- Backup: Local Three.js Globe implementation if CDNs fail -->
 <script>
-    // Check if libraries loaded, provide fallback
-    window.addEventListener('load', function() {
-        if (typeof THREE === 'undefined') {
-            console.error('Three.js failed to load');
-            document.getElementById('loading-screen').innerHTML = 
-                '<h2 style="color: #ff4444;">Failed to load 3D libraries</h2><p>Please check your internet connection</p>';
-            return;
-        }
-        if (typeof Globe === 'undefined') {
-            console.warn('Globe.gl failed to load, using fallback implementation');
-            // We'll provide a fallback in the main script
-        }
-    });
-</script>
-
-<script>
-    class ChronosEarth {
+    // CHRONOS Earth Control System v2.0
+    class CHRONOSEarth {
         constructor() {
             this.globe = null;
-            this.timeZones = [];
-            this.connections = [];
-            this.isLoading = true;
-            this.autoRotate = true;
-            this.currentHover = null;
+            this.scene = null;
+            this.camera = null;
+            this.renderer = null;
+            this.isGlobeGlAvailable = false;
+            this.tooltip = document.getElementById('tmz-tooltip');
+            this.cursor = document.getElementById('custom-cursor');
             
-            this.timeZoneData = this.generateTimeZoneData();
-            this.transportHubs = this.generateTransportHubs();
+            // CHRONOS TMZ Data (Post-Quantum Wars Geography)
+            this.tmzData = this.initializeTMZData();
+            this.railConnections = this.initializeRailNetwork();
             
-            // Wait for libraries to load before initializing
+            this.setupCursor();
             this.waitForLibraries().then(() => {
                 this.init();
             }).catch(error => {
                 console.error('Libraries failed to load:', error);
-                this.showError();
+                this.initFallback();
+            });
+        }
+
+        initializeTMZData() {
+            return [
+                {
+                    name: "Boston Prime",
+                    lat: 42.3601, lng: -71.0589,
+                    population: "4.7M", status: "COMMAND CENTER", tier: "ALPHA",
+                    offset: "-05:00", 
+                    description: "Primary CHRONOS Command Hub. Location of the Master Clock and central temporal control systems."
+                },
+                {
+                    name: "Neo Beijing",
+                    lat: 39.9042, lng: 116.4074,
+                    population: "8.2M", status: "OPERATIONAL", tier: "ALPHA",
+                    offset: "+08:00",
+                    description: "Asian Command Center. Highest population density with advanced temporal acceleration zones."
+                },
+                {
+                    name: "London Chronos",
+                    lat: 51.5074, lng: -0.1278,
+                    population: "3.1M", status: "OPERATIONAL", tier: "ALPHA", 
+                    offset: "+00:00",
+                    description: "European Temporal Hub. Coordinates continental grid and underwater Chrono-Rail to Africa."
+                },
+                {
+                    name: "Tokyo Temporal",
+                    lat: 35.6762, lng: 139.6503,
+                    population: "6.8M", status: "OPERATIONAL", tier: "ALPHA",
+                    offset: "+09:00",
+                    description: "Pacific Command Center. Advanced quantum agricultural zones and oceanic TMZ platforms."
+                },
+                {
+                    name: "Sydney Nexus",
+                    lat: -33.8688, lng: 151.2093,
+                    population: "2.4M", status: "OPERATIONAL", tier: "BETA",
+                    offset: "+11:00",
+                    description: "Oceanic Hub. Experimental TMZ designs and climate-controlled environments."
+                },
+                {
+                    name: "Cairo Quantum",
+                    lat: 30.0444, lng: 31.2357,
+                    population: "1.8M", status: "OPERATIONAL", tier: "BETA",
+                    offset: "+02:00",
+                    description: "African Temporal Center. Desert climate optimization and solar energy harvesting."
+                },
+                {
+                    name: "São Paulo Grid",
+                    lat: -23.5505, lng: -46.6333,
+                    population: "3.2M", status: "OPERATIONAL", tier: "BETA",
+                    offset: "-03:00",
+                    description: "South American Hub. Advanced temporal weather control and atmospheric processing."
+                },
+                {
+                    name: "Mumbai Temporal",
+                    lat: 19.0760, lng: 72.8777,
+                    population: "5.1M", status: "OPERATIONAL", tier: "BETA",
+                    offset: "+05:30",
+                    description: "South Asian Center. High-density population management and monsoon temporal control."
+                }
+            ];
+        }
+
+        initializeRailNetwork() {
+            // Major Chrono-Rail connections between TMZs
+            return [
+                ["Boston Prime", "London Chronos"],
+                ["London Chronos", "Neo Beijing"],
+                ["Neo Beijing", "Tokyo Temporal"],
+                ["Tokyo Temporal", "Sydney Nexus"],
+                ["London Chronos", "Cairo Quantum"],
+                ["Cairo Quantum", "Mumbai Temporal"],
+                ["Mumbai Temporal", "Neo Beijing"],
+                ["Boston Prime", "São Paulo Grid"],
+                ["São Paulo Grid", "London Chronos"],
+                ["Sydney Nexus", "Tokyo Temporal"],
+                // Cross-Pacific connections
+                ["Tokyo Temporal", "Boston Prime"],
+                ["Sydney Nexus", "São Paulo Grid"],
+                // Continental connections
+                ["Neo Beijing", "Mumbai Temporal"],
+                ["Cairo Quantum", "São Paulo Grid"]
+            ];
+        }
+
+        setupCursor() {
+            document.addEventListener('mousemove', (e) => {
+                this.cursor.style.left = e.clientX + 'px';
+                this.cursor.style.top = e.clientY + 'px';
+            });
+
+            document.addEventListener('mousedown', () => {
+                this.cursor.style.transform = 'scale(0.8)';
+            });
+
+            document.addEventListener('mouseup', () => {
+                this.cursor.style.transform = 'scale(1)';
             });
         }
 
         async waitForLibraries() {
             return new Promise((resolve, reject) => {
                 let attempts = 0;
-                const maxAttempts = 50; // 5 seconds
+                const maxAttempts = 50;
                 
                 const checkLibraries = () => {
                     attempts++;
                     
-                    if (typeof THREE !== 'undefined' && (typeof Globe !== 'undefined' || attempts > 30)) {
-                        console.log('Libraries loaded successfully');
+                    if (typeof THREE !== 'undefined') {
+                        this.isGlobeGlAvailable = typeof Globe !== 'undefined';
+                        console.log('Three.js loaded. Globe.gl available:', this.isGlobeGlAvailable);
                         resolve();
                         return;
                     }
                     
                     if (attempts >= maxAttempts) {
-                        reject(new Error('Libraries failed to load after 5 seconds'));
+                        reject(new Error('Libraries failed to load'));
                         return;
                     }
                     
@@ -367,230 +652,382 @@
 
         async init() {
             try {
-                if (typeof Globe === 'undefined') {
-                    console.warn('Globe.gl not available, using fallback implementation');
-                    this.setupFallbackGlobe();
+                if (this.isGlobeGlAvailable) {
+                    this.setupGlobeGL();
                 } else {
-                    this.setupGlobe();
-                    this.setupTimeZones();
-                    this.setupTransportConnections();
+                    this.setupThreeJSFallback();
                 }
                 
                 this.setupControls();
                 this.startTimeUpdates();
+                this.updateNetworkStats();
                 
-                // Simulate loading time for effect
                 setTimeout(() => {
                     this.hideLoading();
-                }, 2000);
+                }, 3000);
                 
             } catch (error) {
                 console.error('Failed to initialize CHRONOS Earth:', error);
-                this.showError();
+                this.initFallback();
             }
         }
 
-        setupFallbackGlobe() {
-            // Fallback implementation using pure Three.js
-            const container = document.getElementById('globe-container');
-            
-            // Create scene, camera, and renderer
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0x000011, 1);
-            container.appendChild(renderer.domElement);
-            
-            // Create Earth sphere
-            const geometry = new THREE.SphereGeometry(100, 64, 32);
-            
-            // Create Earth material with procedural texture
-            const canvas = document.createElement('canvas');
-            canvas.width = 1024;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            
-            // Draw gradient background
-            const gradient = ctx.createRadialGradient(512, 256, 0, 512, 256, 512);
-            gradient.addColorStop(0, '#004080');
-            gradient.addColorStop(0.5, '#002040');
-            gradient.addColorStop(1, '#000020');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 1024, 512);
-            
-            // Add some continent-like shapes
-            ctx.fillStyle = '#006699';
-            ctx.beginPath();
-            ctx.ellipse(200, 200, 80, 40, 0, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(600, 150, 120, 60, 0, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(800, 300, 100, 50, 0, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            const texture = new THREE.CanvasTexture(canvas);
-            const material = new THREE.MeshPhongMaterial({ 
-                map: texture,
-                transparent: true,
-                opacity: 0.9
-            });
-            
-            const earth = new THREE.Mesh(geometry, material);
-            scene.add(earth);
-            
-            // Add atmosphere
-            const atmosphereGeometry = new THREE.SphereGeometry(105, 64, 32);
-            const atmosphereMaterial = new THREE.MeshBasicMaterial({
-                color: 0x00bfff,
-                transparent: true,
-                opacity: 0.1,
-                side: THREE.BackSide
-            });
-            const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-            scene.add(atmosphere);
-            
-            // Add lighting
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 1);
-            scene.add(directionalLight);
-            
-            // Position camera
-            camera.position.z = this.isMobile() ? 400 : 350;
-            
-            // Animation loop
-            const animate = () => {
-                requestAnimationFrame(animate);
-                
-                if (this.autoRotate) {
-                    earth.rotation.y += 0.005;
-                    atmosphere.rotation.y += 0.005;
-                }
-                
-                renderer.render(scene, camera);
-            };
-            animate();
-            
-            // Store references for control
-            this.fallbackScene = { scene, camera, renderer, earth, atmosphere };
-            
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-            
-            console.log('Fallback 3D globe initialized');
-        }
-
-        showError() {
-            const loadingScreen = document.getElementById('loading-screen');
-            loadingScreen.innerHTML = `
-                <div style="text-align: center;">
-                    <h2 style="color: #ff4444; margin-bottom: 1rem;">CHRONOS SYSTEM ERROR</h2>
-                    <p style="color: #ffaa44; margin-bottom: 1rem;">Failed to initialize 3D Earth system</p>
-                    <p style="color: #ffffff; font-size: 0.9rem;">Please check your internet connection and refresh the page</p>
-                    <button onclick="location.reload()" style="
-                        margin-top: 1rem;
-                        padding: 0.5rem 1rem;
-                        background: #00bfff;
-                        color: white;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-family: 'Orbitron', monospace;
-                    ">RETRY INITIALIZATION</button>
-                </div>
-            `;
-        }
-
-        setupGlobe() {
+        setupGlobeGL() {
             const container = document.getElementById('globe-container');
             
             this.globe = Globe()(container)
-                .globeImageUrl('data:image/svg+xml;base64,' + this.generateEarthTexture())
+                .globeImageUrl(this.generateCHRONOSTexture())
                 .bumpImageUrl(null)
-                .backgroundImageUrl('data:image/svg+xml;base64,' + this.generateStarField())
+                .backgroundImageUrl(this.generateStarField())
                 .showGraticules(false)
                 .showAtmosphere(true)
-                .atmosphereColor('#00bfff')
-                .atmosphereAltitude(0.15)
+                .atmosphereColor('#00FFFF')
+                .atmosphereAltitude(0.2)
                 .width(window.innerWidth)
                 .height(window.innerHeight);
 
-            // Set camera position
+            // Configure camera
             const camera = this.globe.camera();
             camera.position.z = this.isMobile() ? 400 : 350;
 
             // Auto-rotate
             this.globe.controls().autoRotate = true;
-            this.globe.controls().autoRotateSpeed = 0.5;
+            this.globe.controls().autoRotateSpeed = 0.3;
             this.globe.controls().enableZoom = true;
             this.globe.controls().enablePan = true;
-            this.globe.controls().minDistance = 200;
+            this.globe.controls().minDistance = 180;
             this.globe.controls().maxDistance = 800;
+
+            this.setupTMZVisualization();
+            this.setupRailNetwork();
         }
 
-        setupTimeZones() {
-            this.globe
-                .polygonsData(this.timeZoneData)
-                .polygonCapColor(d => this.getTimeZoneColor(d.utcOffset))
-                .polygonSideColor(() => 'rgba(0, 191, 255, 0.1)')
-                .polygonStrokeColor(() => '#00bfff')
-                .polygonAltitude(0.01)
-                .polygonLabel(d => this.createTimeZoneTooltip(d))
-                .onPolygonClick(this.handleTimeZoneClick.bind(this))
-                .onPolygonHover(this.handleTimeZoneHover.bind(this));
-
-            document.getElementById('zone-count').textContent = this.timeZoneData.length;
-        }
-
-        setupTransportConnections() {
-            const arcs = [];
+        setupThreeJSFallback() {
+            console.log('Using Three.js fallback implementation');
+            const container = document.getElementById('globe-container');
             
-            // Create connections between major hubs
-            for (let i = 0; i < this.transportHubs.length; i++) {
-                for (let j = i + 1; j < this.transportHubs.length; j++) {
-                    arcs.push({
-                        startLat: this.transportHubs[i].lat,
-                        startLng: this.transportHubs[i].lng,
-                        endLat: this.transportHubs[j].lat,
-                        endLng: this.transportHubs[j].lng,
-                        color: ['#00bfff', '#00ffff']
-                    });
+            // Scene setup
+            this.scene = new THREE.Scene();
+            this.scene.background = new THREE.Color(0x00060e);
+            
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.camera.position.z = this.isMobile() ? 400 : 350;
+            
+            this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setClearColor(0x00060e, 1);
+            container.appendChild(this.renderer.domElement);
+            
+            this.createCHRONOSEarth();
+            this.addLighting();
+            this.addTMZMarkers();
+            this.addRailConnections();
+            this.startAnimation();
+        }
+
+        createCHRONOSEarth() {
+            // Create Earth geometry
+            const geometry = new THREE.SphereGeometry(100, 64, 32);
+            
+            // Create custom CHRONOS texture
+            const canvas = document.createElement('canvas');
+            canvas.width = 2048;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            
+            // Dark base
+            const gradient = ctx.createRadialGradient(1024, 512, 0, 1024, 512, 1024);
+            gradient.addColorStop(0, '#2d2d2d');
+            gradient.addColorStop(0.7, '#1a1a1a');
+            gradient.addColorStop(1, '#0a0a0a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add continent shapes with neon blue edges
+            this.drawContinents(ctx);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.MeshPhongMaterial({
+                map: texture,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            this.earth = new THREE.Mesh(geometry, material);
+            this.scene.add(this.earth);
+            
+            // Add atmosphere glow
+            this.addAtmosphereGlow();
+        }
+
+        drawContinents(ctx) {
+            ctx.strokeStyle = '#00FFFF';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = '#00FFFF';
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = '#003366';
+            
+            // North America (post-Quantum Wars - fractured)
+            ctx.beginPath();
+            ctx.moveTo(300, 400);
+            ctx.quadraticCurveTo(400, 350, 500, 400);
+            ctx.quadraticCurveTo(550, 450, 600, 400);
+            ctx.lineTo(600, 500);
+            ctx.quadraticCurveTo(500, 550, 400, 500);
+            ctx.quadraticCurveTo(350, 480, 300, 500);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Europe/Africa
+            ctx.beginPath();
+            ctx.moveTo(950, 350);
+            ctx.quadraticCurveTo(1100, 300, 1200, 350);
+            ctx.lineTo(1250, 600);
+            ctx.quadraticCurveTo(1200, 650, 1100, 600);
+            ctx.quadraticCurveTo(1000, 620, 950, 600);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Asia (expanded due to tectonic shifts)
+            ctx.beginPath();
+            ctx.moveTo(1300, 300);
+            ctx.quadraticCurveTo(1500, 250, 1700, 300);
+            ctx.quadraticCurveTo(1750, 400, 1700, 500);
+            ctx.quadraticCurveTo(1600, 520, 1500, 500);
+            ctx.quadraticCurveTo(1350, 480, 1300, 450);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Australia/Oceania (new configurations)
+            ctx.beginPath();
+            ctx.moveTo(1600, 700);
+            ctx.quadraticCurveTo(1700, 680, 1800, 700);
+            ctx.quadraticCurveTo(1820, 750, 1800, 800);
+            ctx.quadraticCurveTo(1700, 820, 1600, 800);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Add TMZ boundaries
+            this.drawTMZBoundaries(ctx);
+        }
+
+        drawTMZBoundaries(ctx) {
+            ctx.strokeStyle = '#25E1ED';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = '#25E1ED';
+            ctx.shadowBlur = 15;
+            
+            this.tmzData.forEach(tmz => {
+                const x = ((tmz.lng + 180) / 360) * 2048;
+                const y = ((90 - tmz.lat) / 180) * 1024;
+                const radius = tmz.tier === 'ALPHA' ? 80 : 60;
+                
+                // Draw TMZ boundary circle
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                // Add pulsing center dot
+                ctx.fillStyle = '#00FFFF';
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+
+        addAtmosphereGlow() {
+            const glowGeometry = new THREE.SphereGeometry(105, 32, 16);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x00FFFF,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            
+            this.atmosphere = new THREE.Mesh(glowGeometry, glowMaterial);
+            this.scene.add(this.atmosphere);
+        }
+
+        addLighting() {
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+            this.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0x00FFFF, 0.6);
+            directionalLight.position.set(1, 1, 1);
+            this.scene.add(directionalLight);
+        }
+
+        addTMZMarkers() {
+            this.tmzMarkers = [];
+            
+            this.tmzData.forEach(tmz => {
+                const position = this.latLonToVector3(tmz.lat, tmz.lng, 102);
+                
+                // Create glowing TMZ marker
+                const markerGeometry = new THREE.CylinderGeometry(1, 3, 8, 8);
+                const markerMaterial = new THREE.MeshBasicMaterial({
+                    color: tmz.tier === 'ALPHA' ? 0x00FFFF : 0x25E1ED,
+                    transparent: true,
+                    opacity: 0.9
+                });
+                
+                const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+                marker.position.copy(position);
+                marker.lookAt(new THREE.Vector3(0, 0, 0));
+                marker.userData = tmz;
+                
+                this.scene.add(marker);
+                this.tmzMarkers.push(marker);
+            });
+        }
+
+        addRailConnections() {
+            this.railConnections.forEach(connection => {
+                const tmz1 = this.tmzData.find(t => t.name === connection[0]);
+                const tmz2 = this.tmzData.find(t => t.name === connection[1]);
+                
+                if (tmz1 && tmz2) {
+                    this.createRailConnection(tmz1, tmz2);
                 }
-            }
+            });
+        }
+
+        createRailConnection(tmz1, tmz2) {
+            const start = this.latLonToVector3(tmz1.lat, tmz1.lng, 101);
+            const end = this.latLonToVector3(tmz2.lat, tmz2.lng, 101);
+            
+            // Create curved path
+            const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+            mid.normalize().multiplyScalar(120); // Curve outward
+            
+            const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+            const points = curve.getPoints(50);
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            
+            const material = new THREE.LineBasicMaterial({
+                color: 0x00FFFF,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            const line = new THREE.Line(geometry, material);
+            this.scene.add(line);
+        }
+
+        setupTMZVisualization() {
+            if (!this.globe) return;
+            
+            // Convert TMZ data for Globe.gl
+            const tmzPolygons = this.tmzData.map(tmz => ({
+                type: 'Feature',
+                properties: tmz,
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [this.createTMZBoundary(tmz.lat, tmz.lng, tmz.tier === 'ALPHA' ? 8 : 6)]
+                }
+            }));
+
+            this.globe
+                .polygonsData(tmzPolygons)
+                .polygonCapColor(d => d.properties.tier === 'ALPHA' ? '#00FFFF' : '#25E1ED')
+                .polygonSideColor(() => 'rgba(0, 255, 255, 0.2)')
+                .polygonStrokeColor(() => '#00FFFF')
+                .polygonAltitude(0.02)
+                .polygonLabel(d => this.createTMZTooltip(d.properties))
+                .onPolygonClick(this.handleTMZClick.bind(this))
+                .onPolygonHover(this.handleTMZHover.bind(this));
+
+            // Add TMZ markers
+            this.globe
+                .pointsData(this.tmzData)
+                .pointColor(d => d.tier === 'ALPHA' ? '#00FFFF' : '#25E1ED')
+                .pointAltitude(0.03)
+                .pointRadius(d => d.tier === 'ALPHA' ? 0.5 : 0.3);
+        }
+
+        setupRailNetwork() {
+            if (!this.globe) return;
+            
+            const arcs = this.railConnections.map(connection => {
+                const tmz1 = this.tmzData.find(t => t.name === connection[0]);
+                const tmz2 = this.tmzData.find(t => t.name === connection[1]);
+                
+                return {
+                    startLat: tmz1.lat,
+                    startLng: tmz1.lng,
+                    endLat: tmz2.lat,
+                    endLng: tmz2.lng,
+                    color: ['#00FFFF', '#25E1ED']
+                };
+            });
 
             this.globe
                 .arcsData(arcs)
                 .arcColor('color')
-                .arcDashLength(0.4)
-                .arcDashGap(0.2)
+                .arcDashLength(0.3)
+                .arcDashGap(0.1)
                 .arcDashAnimateTime(2000)
-                .arcStroke(0.8)
+                .arcStroke(1)
                 .arcsTransitionDuration(1000);
+        }
 
-            // Add hub points
-            this.globe
-                .pointsData(this.transportHubs)
-                .pointColor(() => '#00ffff')
-                .pointAltitude(0.02)
-                .pointRadius(0.3)
-                .pointLabel(d => `<div class="timezone-tooltip"><h4>${d.name}</h4><p>Major Transport Hub</p></div>`);
+        createTMZBoundary(lat, lng, radius) {
+            const points = [];
+            const numPoints = 32;
+            
+            for (let i = 0; i <= numPoints; i++) {
+                const angle = (i / numPoints) * 2 * Math.PI;
+                const dx = radius * Math.cos(angle);
+                const dy = radius * Math.sin(angle);
+                points.push([lng + dx, lat + dy]);
+            }
+            
+            return points;
+        }
 
-            document.getElementById('transport-count').textContent = arcs.length;
+        createTMZTooltip(tmz) {
+            return `
+                <div style="
+                    background: rgba(0, 6, 14, 0.95);
+                    border: 1px solid #00FFFF;
+                    border-radius: 6px;
+                    padding: 12px;
+                    color: white;
+                    font-family: 'Orbitron', monospace;
+                    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+                    backdrop-filter: blur(10px);
+                    max-width: 250px;
+                ">
+                    <h4 style="color: #25E1ED; margin-bottom: 8px;">${tmz.name}</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px; color: rgba(255,255,255,0.8);">${tmz.description}</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem;">
+                        <div><strong style="color: #00FFFF;">Population:</strong><br>${tmz.population}</div>
+                        <div><strong style="color: #00FFFF;">Status:</strong><br>${tmz.status}</div>
+                        <div><strong style="color: #00FFFF;">Tier:</strong><br>${tmz.tier}</div>
+                        <div><strong style="color: #00FFFF;">UTC:</strong><br>${tmz.offset}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        handleTMZClick(tmz) {
+            console.log('TMZ clicked:', tmz.properties.name);
+        }
+
+        handleTMZHover(tmz, prevTmz) {
+            // Handle hover effects if needed
         }
 
         setupControls() {
-            const canvas = document.querySelector('#globe-container canvas');
-            if (!canvas) return;
+            const canvas = this.globe ? 
+                document.querySelector('#globe-container canvas') : 
+                this.renderer.domElement;
+            
+            if (!canvas || typeof Hammer === 'undefined') return;
 
             const hammer = new Hammer(canvas);
             hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
@@ -599,27 +1036,36 @@
             let momentum = { x: 0, y: 0 };
 
             hammer.on('panstart', () => {
-                this.globe.controls().autoRotate = false;
+                if (this.globe) {
+                    this.globe.controls().autoRotate = false;
+                }
             });
 
             hammer.on('pan', (event) => {
-                const sensitivity = 0.3;
-                momentum.x = event.velocityX * 20;
-                momentum.y = event.velocityY * 20;
+                momentum.x = event.velocityX * 10;
+                momentum.y = event.velocityY * 10;
             });
 
             hammer.on('panend', () => {
                 this.applyMomentum(momentum);
                 setTimeout(() => {
-                    this.globe.controls().autoRotate = true;
-                }, 3000);
+                    if (this.globe) {
+                        this.globe.controls().autoRotate = true;
+                    }
+                }, 2000);
             });
 
             // Handle window resize
             window.addEventListener('resize', () => {
-                this.globe
-                    .width(window.innerWidth)
-                    .height(window.innerHeight);
+                if (this.globe) {
+                    this.globe
+                        .width(window.innerWidth)
+                        .height(window.innerHeight);
+                } else if (this.renderer) {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                }
             });
         }
 
@@ -632,13 +1078,29 @@
                     momentum.x *= dampening;
                     momentum.y *= dampening;
                     requestAnimationFrame(animate);
-                } else {
-                    setTimeout(() => {
-                        this.globe.controls().autoRotate = true;
-                    }, 1000);
                 }
             };
 
+            animate();
+        }
+
+        startAnimation() {
+            if (!this.renderer) return;
+            
+            const animate = () => {
+                requestAnimationFrame(animate);
+                
+                if (this.earth) {
+                    this.earth.rotation.y += 0.002;
+                }
+                
+                if (this.atmosphere) {
+                    this.atmosphere.rotation.y += 0.001;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            };
+            
             animate();
         }
 
@@ -653,146 +1115,64 @@
             setInterval(updateTime, 1000);
         }
 
-        generateTimeZoneData() {
-            const zones = [];
-            const zoneNames = [
-                'Pacific/Honolulu', 'America/Anchorage', 'America/Los_Angeles',
-                'America/Denver', 'America/Chicago', 'America/New_York',
-                'Europe/London', 'Europe/Paris', 'Europe/Moscow',
-                'Asia/Dubai', 'Asia/Kolkata', 'Asia/Shanghai',
-                'Asia/Tokyo', 'Australia/Sydney', 'Pacific/Auckland'
-            ];
-
-            zoneNames.forEach((name, index) => {
-                const utcOffset = -12 + Math.floor(index * 24 / zoneNames.length);
-                zones.push({
-                    type: 'Feature',
-                    properties: {
-                        name: name,
-                        utcOffset: utcOffset,
-                        id: `zone_${index}`
-                    },
-                    geometry: {
-                        type: 'Polygon',
-                        coordinates: [this.generateZonePolygon(index, zoneNames.length)]
-                    }
-                });
-            });
-
-            return zones;
+        updateNetworkStats() {
+            document.getElementById('tmz-count').textContent = this.tmzData.length;
+            document.getElementById('rail-connections').textContent = this.railConnections.length;
         }
 
-        generateZonePolygon(index, total) {
-            const longitudeWidth = 360 / total;
-            const startLng = -180 + (index * longitudeWidth);
-            const endLng = startLng + longitudeWidth;
-
-            return [
-                [startLng, -60],
-                [endLng, -60],
-                [endLng, 75],
-                [startLng, 75],
-                [startLng, -60]
-            ];
+        latLonToVector3(lat, lon, radius) {
+            const phi = (90 - lat) * (Math.PI / 180);
+            const theta = (lon + 180) * (Math.PI / 180);
+            
+            return new THREE.Vector3(
+                -radius * Math.sin(phi) * Math.cos(theta),
+                radius * Math.cos(phi),
+                radius * Math.sin(phi) * Math.sin(theta)
+            );
         }
 
-        generateTransportHubs() {
-            return [
-                { lat: 40.7128, lng: -74.0060, name: 'New York Hub' },
-                { lat: 51.5074, lng: -0.1278, name: 'London Hub' },
-                { lat: 35.6762, lng: 139.6503, name: 'Tokyo Hub' },
-                { lat: -33.8688, lng: 151.2093, name: 'Sydney Hub' },
-                { lat: 55.7558, lng: 37.6176, name: 'Moscow Hub' },
-                { lat: 39.9042, lng: 116.4074, name: 'Beijing Hub' }
-            ];
-        }
-
-        getTimeZoneColor(utcOffset) {
-            const colors = {
-                '-12': '#000080', '-11': '#191970', '-10': '#0000CD',
-                '-9': '#0000FF', '-8': '#4169E1', '-7': '#6495ED',
-                '-6': '#87CEEB', '-5': '#87CEFA', '-4': '#00BFFF',
-                '-3': '#1E90FF', '-2': '#0099FF', '-1': '#0080FF',
-                '0': '#00bfff',
-                '1': '#FF6347', '2': '#FF4500', '3': '#FF8C00',
-                '4': '#FFA500', '5': '#FFB347', '6': '#FFCCCB',
-                '7': '#FFE4B5', '8': '#FFEFD5', '9': '#FFF8DC',
-                '10': '#FFFACD', '11': '#FFFFE0', '12': '#FFFFF0'
-            };
-            return colors[utcOffset] || '#00bfff';
-        }
-
-        createTimeZoneTooltip(zone) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', {
-                timeZone: zone.properties.name,
-                hour12: false
-            });
-
-            return `
-                <div class="timezone-tooltip">
-                    <h4>${zone.properties.name}</h4>
-                    <p><strong>Time:</strong> ${timeString}</p>
-                    <p><strong>UTC Offset:</strong> ${zone.properties.utcOffset}</p>
-                    <p><strong>Status:</strong> <span style="color: #00ffff;">MONITORED</span></p>
-                </div>
-            `;
-        }
-
-        handleTimeZoneClick(zone, event) {
-            console.log('Time zone clicked:', zone.properties.name);
-            // Could expand this to show detailed zone information
-        }
-
-        handleTimeZoneHover(zone, prevZone) {
-            this.currentHover = zone;
-            // Could add hover effects here
-        }
-
-        generateEarthTexture() {
-            const svg = `
-                <svg width="1024" height="512" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" style="stop-color:#001a33;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
-                        </radialGradient>
-                    </defs>
-                    <rect width="1024" height="512" fill="url(#earthGrad)"/>
-                    <g opacity="0.3">
-                        ${this.generateContinentShapes()}
-                    </g>
-                </svg>
-            `;
-            return btoa(svg);
-        }
-
-        generateContinentShapes() {
-            // Simplified continent shapes for dark earth effect
-            return `
-                <path d="M150,200 Q200,180 250,200 Q300,220 350,200 L350,250 Q300,270 250,250 Q200,270 150,250 Z" fill="#003366"/>
-                <path d="M400,150 Q500,130 600,150 Q650,170 700,150 L700,300 Q650,320 600,300 Q500,320 400,300 Z" fill="#003366"/>
-                <path d="M750,180 Q850,160 950,180 Q980,200 1000,180 L1000,280 Q980,300 950,280 Q850,300 750,280 Z" fill="#003366"/>
-            `;
+        generateCHRONOSTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 2048;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            
+            // Dark gradient base
+            const gradient = ctx.createRadialGradient(1024, 512, 0, 1024, 512, 1024);
+            gradient.addColorStop(0, '#2d2d2d');
+            gradient.addColorStop(0.7, '#1a1a1a');
+            gradient.addColorStop(1, '#0a0a0a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            this.drawContinents(ctx);
+            
+            return canvas.toDataURL();
         }
 
         generateStarField() {
-            const stars = [];
-            for (let i = 0; i < 100; i++) {
-                const x = Math.random() * 1024;
-                const y = Math.random() * 512;
+            const canvas = document.createElement('canvas');
+            canvas.width = 2048;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#00060e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add stars
+            for (let i = 0; i < 1000; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
                 const size = Math.random() * 2 + 0.5;
                 const opacity = Math.random() * 0.8 + 0.2;
-                stars.push(`<circle cx="${x}" cy="${y}" r="${size}" fill="#ffffff" opacity="${opacity}"/>`);
+                
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, 2 * Math.PI);
+                ctx.fill();
             }
-
-            const svg = `
-                <svg width="1024" height="512" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="1024" height="512" fill="#000011"/>
-                    ${stars.join('')}
-                </svg>
-            `;
-            return btoa(svg);
+            
+            return canvas.toDataURL();
         }
 
         hideLoading() {
@@ -800,7 +1180,32 @@
             loadingScreen.style.opacity = '0';
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-            }, 500);
+            }, 800);
+        }
+
+        initFallback() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: #ff4444; margin-bottom: 1rem;">CHRONOS SYSTEM ERROR</h2>
+                    <p style="color: #ffaa44; margin-bottom: 1rem;">Failed to initialize 3D Earth system</p>
+                    <p style="color: #ffffff; font-size: 0.9rem;">Please check your internet connection and refresh the page</p>
+                    <button onclick="location.reload()" style="
+                        margin-top: 1rem;
+                        padding: 0.8rem 1.5rem;
+                        background: #00FFFF;
+                        color: #00060e;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-family: 'Orbitron', monospace;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+                    ">RETRY INITIALIZATION</button>
+                </div>
+            `;
         }
 
         isMobile() {
@@ -808,9 +1213,9 @@
         }
     }
 
-    // Initialize the application
+    // Initialize CHRONOS Earth Control System
     document.addEventListener('DOMContentLoaded', () => {
-        new ChronosEarth();
+        new CHRONOSEarth();
     });
 
     // Prevent zoom on double tap for mobile
