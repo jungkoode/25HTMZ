@@ -6,7 +6,7 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>CHRONOS Earth Control System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&display=swap');
 
 ```
     :root {
@@ -158,8 +158,8 @@
 
     .control-grid {
         display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-        gap: 1rem !important;
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem !important;
         pointer-events: auto !important;
     }
 
@@ -167,7 +167,7 @@
         background: var(--panel-bg) !important;
         border: 1px solid var(--neon-blue) !important;
         border-radius: 8px !important;
-        padding: 1rem !important;
+        padding: 0.8rem !important;
         backdrop-filter: blur(10px) !important;
         box-shadow: 
             0 0 20px rgba(0, 255, 255, 0.2),
@@ -240,59 +240,59 @@
 
     .instructions {
         color: rgba(255, 255, 255, 0.8) !important;
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important;
         font-weight: 300 !important;
         pointer-events: auto !important;
     }
 
-    .tmz-tooltip {
-        position: absolute !important;
+    .tmz-info-panel {
+        position: fixed !important;
+        bottom: 120px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
         background: var(--panel-bg) !important;
         border: 1px solid var(--neon-blue) !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         padding: 1rem !important;
-        color: white !important;
-        font-size: 0.9rem !important;
-        box-shadow: var(--glow-blue) !important;
+        max-width: 90% !important;
+        z-index: 300 !important;
         backdrop-filter: blur(10px) !important;
-        max-width: 300px !important;
-        z-index: 200 !important;
-        transform: translate(-50%, -100%) !important;
-        pointer-events: none !important;
+        box-shadow: var(--glow-blue) !important;
         opacity: 0 !important;
         transition: opacity 0.3s ease !important;
+        pointer-events: none !important;
     }
 
-    .tmz-tooltip.visible {
+    .tmz-info-panel.visible {
         opacity: 1 !important;
     }
 
-    .tmz-tooltip h4 {
+    .tmz-info-panel h4 {
         color: var(--neon-cyan) !important;
         margin-bottom: 0.5rem !important;
         font-size: 1rem !important;
         font-weight: 700 !important;
     }
 
-    .tmz-tooltip .tmz-info {
+    .tmz-info {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         gap: 0.5rem !important;
         margin-top: 0.5rem !important;
     }
 
-    .tmz-tooltip .info-item {
+    .info-item {
         display: flex !important;
         flex-direction: column !important;
     }
 
-    .tmz-tooltip .info-label {
+    .info-label {
         font-size: 0.7rem !important;
         color: rgba(255, 255, 255, 0.6) !important;
         text-transform: uppercase !important;
     }
 
-    .tmz-tooltip .info-value {
+    .info-value {
         font-size: 0.9rem !important;
         color: var(--neon-blue) !important;
         font-weight: 600 !important;
@@ -350,51 +350,21 @@
         100% { top: 100% !important; opacity: 0 !important; }
     }
 
-    /* Mobile-specific styles with !important */
-    .control-grid {
-        grid-template-columns: 1fr !important;
-        gap: 0.8rem !important;
-    }
-    
-    .control-panel {
-        padding: 0.8rem !important;
-    }
-    
-    .main-title {
-        font-size: 2rem !important;
-        letter-spacing: 2px !important;
-    }
-    
-    .tmz-tooltip {
-        max-width: 250px !important;
-        font-size: 0.8rem !important;
-    }
-    
-    .instructions {
-        font-size: 0.8rem !important;
-    }
-
-    /* Fixed positioning for tooltip to prevent jitter */
-    .tmz-info-panel {
+    .debug-info {
         position: fixed !important;
-        bottom: 120px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        background: var(--panel-bg) !important;
-        border: 1px solid var(--neon-blue) !important;
-        border-radius: 8px !important;
-        padding: 1rem !important;
-        max-width: 90% !important;
-        z-index: 300 !important;
-        backdrop-filter: blur(10px) !important;
-        box-shadow: var(--glow-blue) !important;
-        opacity: 0 !important;
-        transition: opacity 0.3s ease !important;
-        pointer-events: none !important;
+        top: 10px !important;
+        right: 10px !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        color: #00FFFF !important;
+        padding: 10px !important;
+        border-radius: 5px !important;
+        font-size: 0.8rem !important;
+        z-index: 1000 !important;
+        display: none !important;
     }
 
-    .tmz-info-panel.visible {
-        opacity: 1 !important;
+    .debug-info.show {
+        display: block !important;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -413,9 +383,9 @@
         <h1 class="system-title">CHRONOS</h1>
         <p class="loading-text">Initializing Temporal Control Matrix...</p>
         <div style="margin-top: 2rem; font-size: 0.9rem; color: rgba(37, 225, 237, 0.7);">
-            <div>▶ Loading TMZ Network...</div>
-            <div>▶ Establishing Quantum Links...</div>
-            <div>▶ Calibrating Reality Anchors...</div>
+            <div id="loading-step1">▶ Loading Three.js Core...</div>
+            <div id="loading-step2">▶ Establishing TMZ Network...</div>
+            <div id="loading-step3">▶ Calibrating Reality Anchors...</div>
         </div>
     </div>
 
@@ -442,7 +412,7 @@
                     <div class="data-label">Universal Temporal Control</div>
                     <div class="network-status">
                         <div class="network-indicator"></div>
-                        <span style="font-size: 0.8rem; color: var(--radiation-green);">ONLINE</span>
+                        <span style="font-size: 0.8rem; color: var(--radiation-green);" id="system-status">INITIALIZING</span>
                     </div>
                 </div>
             </div>
@@ -472,7 +442,7 @@
                     <div class="data-label">Active Connections</div>
                     <div class="network-status">
                         <div class="network-indicator"></div>
-                        <span style="font-size: 0.8rem; color: var(--radiation-green);">OPERATIONAL</span>
+                        <span style="font-size: 0.8rem; color: var(--radiation-green);" id="rail-status">OPERATIONAL</span>
                     </div>
                 </div>
             </div>
@@ -489,7 +459,7 @@
 </div>
 
 <div id="tmz-info-panel" class="tmz-info-panel">
-    <h4 id="info-panel-title" style="color: var(--neon-cyan); margin-bottom: 0.5rem;">TMZ Information</h4>
+    <h4 id="info-panel-title">TMZ Information</h4>
     <p id="info-panel-description" style="margin-bottom: 0.8rem; color: rgba(255,255,255,0.8);"></p>
     <div class="tmz-info">
         <div class="info-item">
@@ -513,16 +483,58 @@
 
 <div class="custom-cursor" id="custom-cursor"></div>
 
-<!-- Three.js with multiple fallbacks -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
-        onerror="this.onerror=null;this.src='https://unpkg.com/three@0.150.0/build/three.min.js'"></script>
+<div id="debug-info" class="debug-info">
+    <div>THREE.js: <span id="debug-threejs">Loading...</span></div>
+    <div>WebGL: <span id="debug-webgl">Checking...</span></div>
+    <div>Mobile: <span id="debug-mobile">Detecting...</span></div>
+    <div>Performance: <span id="debug-perf">--</span></div>
+</div>
 
-<!-- Hammer.js with fallback -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
-        onerror="this.onerror=null;this.src='https://unpkg.com/hammerjs@2.0.8/hammer.min.js'"></script>
+<!-- Use jsDelivr CDN with fallback - Most reliable for GitHub Pages -->
+<script type="module">
+    // Performance monitoring and debugging
+    const DEBUG = window.location.hostname === 'localhost' || window.location.search.includes('debug=1');
+    let startTime = performance.now();
+    
+    function updateDebug(key, value) {
+        const element = document.getElementById(`debug-${key}`);
+        if (element) element.textContent = value;
+        if (DEBUG) {
+            console.log(`Debug ${key}:`, value);
+            document.getElementById('debug-info').classList.add('show');
+        }
+    }
 
-<script>
-    // CHRONOS Earth Control System v3.0 - Fixed Version
+    // Initialize debug info
+    updateDebug('mobile', /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Yes' : 'No');
+    updateDebug('webgl', !!window.WebGLRenderingContext ? 'Supported' : 'Not Supported');
+
+    async function loadThreeJS() {
+        try {
+            document.getElementById('loading-step1').style.color = '#25E1ED';
+            
+            // Primary CDN: jsDelivr (most reliable for GitHub Pages)
+            const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+            window.THREE = THREE;
+            updateDebug('threejs', 'Loaded (jsDelivr)');
+            return THREE;
+        } catch (error) {
+            console.warn('Primary CDN failed, trying fallback:', error);
+            try {
+                // Fallback CDN: unpkg
+                const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+                window.THREE = THREE;
+                updateDebug('threejs', 'Loaded (unpkg)');
+                return THREE;
+            } catch (fallbackError) {
+                console.error('All CDNs failed:', fallbackError);
+                updateDebug('threejs', 'Failed');
+                throw new Error('Failed to load Three.js from all CDNs');
+            }
+        }
+    }
+
+    // CHRONOS Earth Control System - GitHub Pages Optimized
     class CHRONOSEarth {
         constructor() {
             this.scene = null;
@@ -535,18 +547,19 @@
             this.selectedTMZ = null;
             this.isRotating = false;
             this.lastInteraction = Date.now();
+            this.isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            // Performance optimization for mobile
+            this.pixelRatio = this.isMobile ? Math.min(window.devicePixelRatio, 2) : window.devicePixelRatio;
+            this.particleCount = this.isMobile ? 1000 : 5000;
+            this.enableShadows = !this.isMobile;
             
             // CHRONOS TMZ Data based on lore
             this.tmzData = this.initializeTMZData();
             this.railConnections = this.initializeRailNetwork();
             
             this.setupCursor();
-            this.waitForLibraries().then(() => {
-                this.init();
-            }).catch(error => {
-                console.error('Libraries failed to load:', error);
-                this.initFallback();
-            });
+            this.init();
         }
 
         initializeTMZData() {
@@ -647,33 +660,13 @@
             });
         }
 
-        async waitForLibraries() {
-            return new Promise((resolve, reject) => {
-                let attempts = 0;
-                const maxAttempts = 50;
-                
-                const checkLibraries = () => {
-                    attempts++;
-                    
-                    if (typeof THREE !== 'undefined') {
-                        resolve();
-                        return;
-                    }
-                    
-                    if (attempts >= maxAttempts) {
-                        reject(new Error('Libraries failed to load'));
-                        return;
-                    }
-                    
-                    setTimeout(checkLibraries, 100);
-                };
-                
-                checkLibraries();
-            });
-        }
-
         async init() {
             try {
+                // Load Three.js with proper error handling
+                const THREE = await loadThreeJS();
+                
+                document.getElementById('loading-step2').style.color = '#25E1ED';
+                
                 this.setupThreeJS();
                 this.createCHRONOSEarth();
                 this.addLighting();
@@ -684,9 +677,16 @@
                 this.startTimeUpdates();
                 this.updateNetworkStats();
                 
+                document.getElementById('loading-step3').style.color = '#25E1ED';
+                document.getElementById('system-status').textContent = 'ONLINE';
+                
+                // Performance monitoring
+                const loadTime = performance.now() - startTime;
+                updateDebug('perf', `${loadTime.toFixed(0)}ms`);
+                
                 setTimeout(() => {
                     this.hideLoading();
-                }, 3000);
+                }, 2000);
                 
             } catch (error) {
                 console.error('Failed to initialize CHRONOS Earth:', error);
@@ -698,33 +698,37 @@
             const container = document.getElementById('globe-container');
             
             // Scene setup
-            this.scene = new THREE.Scene();
-            this.scene.background = new THREE.Color(0x00060e);
+            this.scene = new window.THREE.Scene();
+            this.scene.background = new window.THREE.Color(0x00060e);
             
-            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            this.camera.position.z = 300;
+            this.camera = new window.THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.camera.position.z = this.isMobile ? 250 : 300;
             
-            this.renderer = new THREE.WebGLRenderer({ 
-                antialias: true, 
+            this.renderer = new window.THREE.WebGLRenderer({ 
+                antialias: !this.isMobile, // Disable antialiasing on mobile for performance
                 alpha: true,
                 powerPreference: "high-performance"
             });
+            this.renderer.setPixelRatio(this.pixelRatio);
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             this.renderer.setClearColor(0x00060e, 1);
-            this.renderer.shadowMap.enabled = true;
-            this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            if (this.enableShadows) {
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = window.THREE.PCFSoftShadowMap;
+            }
             
             container.appendChild(this.renderer.domElement);
         }
 
         createCHRONOSEarth() {
-            // Create Earth geometry
-            const geometry = new THREE.SphereGeometry(80, 64, 32);
+            // Create Earth geometry with appropriate detail for device
+            const geometry = new window.THREE.SphereGeometry(80, this.isMobile ? 32 : 64, this.isMobile ? 16 : 32);
             
             // Create custom CHRONOS texture - BLACK EARTH with BLUE CONTINENT LINES
             const canvas = document.createElement('canvas');
-            canvas.width = 2048;
-            canvas.height = 1024;
+            canvas.width = this.isMobile ? 1024 : 2048;
+            canvas.height = this.isMobile ? 512 : 1024;
             const ctx = canvas.getContext('2d');
             
             // Deep black base for post-Quantum Wars Earth
@@ -733,156 +737,162 @@
             
             // Add darker landmass shapes
             ctx.fillStyle = '#1a1a1a';
-            this.drawContinentMasses(ctx);
+            this.drawContinentMasses(ctx, canvas.width, canvas.height);
             
             // Add bright blue neon continent outlines
             ctx.strokeStyle = '#00FFFF';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = this.isMobile ? 2 : 4;
             ctx.shadowColor = '#00FFFF';
-            ctx.shadowBlur = 15;
-            this.drawContinentOutlines(ctx);
+            ctx.shadowBlur = this.isMobile ? 8 : 15;
+            this.drawContinentOutlines(ctx, canvas.width, canvas.height);
             
             // Add TMZ zones
-            this.drawTMZZones(ctx);
+            this.drawTMZZones(ctx, canvas.width, canvas.height);
             
-            const texture = new THREE.CanvasTexture(canvas);
+            const texture = new window.THREE.CanvasTexture(canvas);
             texture.needsUpdate = true;
             
-            const material = new THREE.MeshPhongMaterial({
+            const material = new window.THREE.MeshPhongMaterial({
                 map: texture,
                 transparent: false,
                 shininess: 5,
                 specular: 0x001122
             });
             
-            this.earth = new THREE.Mesh(geometry, material);
-            this.earth.castShadow = true;
-            this.earth.receiveShadow = true;
+            this.earth = new window.THREE.Mesh(geometry, material);
+            if (this.enableShadows) {
+                this.earth.castShadow = true;
+                this.earth.receiveShadow = true;
+            }
             this.scene.add(this.earth);
             
             // Add blue atmospheric glow
             this.addAtmosphereGlow();
         }
 
-        drawContinentMasses(ctx) {
+        drawContinentMasses(ctx, width, height) {
+            const scale = width / 2048; // Scale based on actual canvas size
+            
             // Post-Quantum Wars continent shapes - altered by temporal warfare
             
             // North America (fractured and reshaped)
             ctx.beginPath();
-            ctx.moveTo(280, 380);
-            ctx.quadraticCurveTo(380, 330, 520, 380);
-            ctx.quadraticCurveTo(580, 420, 620, 380);
-            ctx.lineTo(640, 520);
-            ctx.quadraticCurveTo(520, 570, 380, 520);
-            ctx.quadraticCurveTo(320, 500, 280, 520);
+            ctx.moveTo(280 * scale, 380 * scale);
+            ctx.quadraticCurveTo(380 * scale, 330 * scale, 520 * scale, 380 * scale);
+            ctx.quadraticCurveTo(580 * scale, 420 * scale, 620 * scale, 380 * scale);
+            ctx.lineTo(640 * scale, 520 * scale);
+            ctx.quadraticCurveTo(520 * scale, 570 * scale, 380 * scale, 520 * scale);
+            ctx.quadraticCurveTo(320 * scale, 500 * scale, 280 * scale, 520 * scale);
             ctx.closePath();
             ctx.fill();
             
             // Europe/Africa (merged by tectonic shifts)
             ctx.beginPath();
-            ctx.moveTo(920, 320);
-            ctx.quadraticCurveTo(1080, 280, 1220, 320);
-            ctx.lineTo(1280, 650);
-            ctx.quadraticCurveTo(1180, 680, 1080, 650);
-            ctx.quadraticCurveTo(980, 670, 920, 650);
+            ctx.moveTo(920 * scale, 320 * scale);
+            ctx.quadraticCurveTo(1080 * scale, 280 * scale, 1220 * scale, 320 * scale);
+            ctx.lineTo(1280 * scale, 650 * scale);
+            ctx.quadraticCurveTo(1180 * scale, 680 * scale, 1080 * scale, 650 * scale);
+            ctx.quadraticCurveTo(980 * scale, 670 * scale, 920 * scale, 650 * scale);
             ctx.closePath();
             ctx.fill();
             
             // Asia (expanded eastward)
             ctx.beginPath();
-            ctx.moveTo(1300, 280);
-            ctx.quadraticCurveTo(1520, 240, 1720, 280);
-            ctx.quadraticCurveTo(1780, 380, 1720, 520);
-            ctx.quadraticCurveTo(1620, 540, 1520, 520);
-            ctx.quadraticCurveTo(1350, 500, 1300, 480);
+            ctx.moveTo(1300 * scale, 280 * scale);
+            ctx.quadraticCurveTo(1520 * scale, 240 * scale, 1720 * scale, 280 * scale);
+            ctx.quadraticCurveTo(1780 * scale, 380 * scale, 1720 * scale, 520 * scale);
+            ctx.quadraticCurveTo(1620 * scale, 540 * scale, 1520 * scale, 520 * scale);
+            ctx.quadraticCurveTo(1350 * scale, 500 * scale, 1300 * scale, 480 * scale);
             ctx.closePath();
             ctx.fill();
             
             // Australia/Oceania (new island formations)
             ctx.beginPath();
-            ctx.moveTo(1580, 720);
-            ctx.quadraticCurveTo(1720, 700, 1820, 720);
-            ctx.quadraticCurveTo(1840, 780, 1820, 820);
-            ctx.quadraticCurveTo(1720, 840, 1580, 820);
+            ctx.moveTo(1580 * scale, 720 * scale);
+            ctx.quadraticCurveTo(1720 * scale, 700 * scale, 1820 * scale, 720 * scale);
+            ctx.quadraticCurveTo(1840 * scale, 780 * scale, 1820 * scale, 820 * scale);
+            ctx.quadraticCurveTo(1720 * scale, 840 * scale, 1580 * scale, 820 * scale);
             ctx.closePath();
             ctx.fill();
             
             // South America (shifted northward)
             ctx.beginPath();
-            ctx.moveTo(600, 580);
-            ctx.quadraticCurveTo(720, 560, 800, 600);
-            ctx.lineTo(780, 900);
-            ctx.quadraticCurveTo(720, 920, 640, 900);
-            ctx.quadraticCurveTo(580, 880, 600, 820);
+            ctx.moveTo(600 * scale, 580 * scale);
+            ctx.quadraticCurveTo(720 * scale, 560 * scale, 800 * scale, 600 * scale);
+            ctx.lineTo(780 * scale, 900 * scale);
+            ctx.quadraticCurveTo(720 * scale, 920 * scale, 640 * scale, 900 * scale);
+            ctx.quadraticCurveTo(580 * scale, 880 * scale, 600 * scale, 820 * scale);
             ctx.closePath();
             ctx.fill();
         }
 
-        drawContinentOutlines(ctx) {
+        drawContinentOutlines(ctx, width, height) {
+            const scale = width / 2048;
+            
             // Bright neon blue outlines for continent borders
             
             // North America outline
             ctx.beginPath();
-            ctx.moveTo(280, 380);
-            ctx.quadraticCurveTo(380, 330, 520, 380);
-            ctx.quadraticCurveTo(580, 420, 620, 380);
-            ctx.lineTo(640, 520);
-            ctx.quadraticCurveTo(520, 570, 380, 520);
-            ctx.quadraticCurveTo(320, 500, 280, 520);
+            ctx.moveTo(280 * scale, 380 * scale);
+            ctx.quadraticCurveTo(380 * scale, 330 * scale, 520 * scale, 380 * scale);
+            ctx.quadraticCurveTo(580 * scale, 420 * scale, 620 * scale, 380 * scale);
+            ctx.lineTo(640 * scale, 520 * scale);
+            ctx.quadraticCurveTo(520 * scale, 570 * scale, 380 * scale, 520 * scale);
+            ctx.quadraticCurveTo(320 * scale, 500 * scale, 280 * scale, 520 * scale);
             ctx.closePath();
             ctx.stroke();
             
             // Europe/Africa outline
             ctx.beginPath();
-            ctx.moveTo(920, 320);
-            ctx.quadraticCurveTo(1080, 280, 1220, 320);
-            ctx.lineTo(1280, 650);
-            ctx.quadraticCurveTo(1180, 680, 1080, 650);
-            ctx.quadraticCurveTo(980, 670, 920, 650);
+            ctx.moveTo(920 * scale, 320 * scale);
+            ctx.quadraticCurveTo(1080 * scale, 280 * scale, 1220 * scale, 320 * scale);
+            ctx.lineTo(1280 * scale, 650 * scale);
+            ctx.quadraticCurveTo(1180 * scale, 680 * scale, 1080 * scale, 650 * scale);
+            ctx.quadraticCurveTo(980 * scale, 670 * scale, 920 * scale, 650 * scale);
             ctx.closePath();
             ctx.stroke();
             
             // Asia outline
             ctx.beginPath();
-            ctx.moveTo(1300, 280);
-            ctx.quadraticCurveTo(1520, 240, 1720, 280);
-            ctx.quadraticCurveTo(1780, 380, 1720, 520);
-            ctx.quadraticCurveTo(1620, 540, 1520, 520);
-            ctx.quadraticCurveTo(1350, 500, 1300, 480);
+            ctx.moveTo(1300 * scale, 280 * scale);
+            ctx.quadraticCurveTo(1520 * scale, 240 * scale, 1720 * scale, 280 * scale);
+            ctx.quadraticCurveTo(1780 * scale, 380 * scale, 1720 * scale, 520 * scale);
+            ctx.quadraticCurveTo(1620 * scale, 540 * scale, 1520 * scale, 520 * scale);
+            ctx.quadraticCurveTo(1350 * scale, 500 * scale, 1300 * scale, 480 * scale);
             ctx.closePath();
             ctx.stroke();
             
             // Australia/Oceania outline
             ctx.beginPath();
-            ctx.moveTo(1580, 720);
-            ctx.quadraticCurveTo(1720, 700, 1820, 720);
-            ctx.quadraticCurveTo(1840, 780, 1820, 820);
-            ctx.quadraticCurveTo(1720, 840, 1580, 820);
+            ctx.moveTo(1580 * scale, 720 * scale);
+            ctx.quadraticCurveTo(1720 * scale, 700 * scale, 1820 * scale, 720 * scale);
+            ctx.quadraticCurveTo(1840 * scale, 780 * scale, 1820 * scale, 820 * scale);
+            ctx.quadraticCurveTo(1720 * scale, 840 * scale, 1580 * scale, 820 * scale);
             ctx.closePath();
             ctx.stroke();
             
             // South America outline
             ctx.beginPath();
-            ctx.moveTo(600, 580);
-            ctx.quadraticCurveTo(720, 560, 800, 600);
-            ctx.lineTo(780, 900);
-            ctx.quadraticCurveTo(720, 920, 640, 900);
-            ctx.quadraticCurveTo(580, 880, 600, 820);
+            ctx.moveTo(600 * scale, 580 * scale);
+            ctx.quadraticCurveTo(720 * scale, 560 * scale, 800 * scale, 600 * scale);
+            ctx.lineTo(780 * scale, 900 * scale);
+            ctx.quadraticCurveTo(720 * scale, 920 * scale, 640 * scale, 900 * scale);
+            ctx.quadraticCurveTo(580 * scale, 880 * scale, 600 * scale, 820 * scale);
             ctx.closePath();
             ctx.stroke();
         }
 
-        drawTMZZones(ctx) {
+        drawTMZZones(ctx, width, height) {
             // Draw TMZ zones based on lore data
             ctx.strokeStyle = '#25E1ED';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = this.isMobile ? 2 : 3;
             ctx.shadowColor = '#25E1ED';
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = this.isMobile ? 10 : 20;
             
             this.tmzData.forEach(tmz => {
-                const x = ((tmz.lng + 180) / 360) * 2048;
-                const y = ((90 - tmz.lat) / 180) * 1024;
-                const radius = tmz.tier === 'PRIME' ? 100 : tmz.tier === 'ALPHA' ? 80 : 60;
+                const x = ((tmz.lng + 180) / 360) * width;
+                const y = ((90 - tmz.lat) / 180) * height;
+                const radius = (tmz.tier === 'PRIME' ? 100 : tmz.tier === 'ALPHA' ? 80 : 60) * (width / 2048);
                 
                 // Draw TMZ boundary circle
                 ctx.beginPath();
@@ -892,14 +902,14 @@
                 // Add glowing center dot
                 ctx.fillStyle = tmz.tier === 'PRIME' ? '#FFD700' : '#00FFFF';
                 ctx.beginPath();
-                ctx.arc(x, y, 8, 0, 2 * Math.PI);
+                ctx.arc(x, y, 8 * (width / 2048), 0, 2 * Math.PI);
                 ctx.fill();
             });
         }
 
         addAtmosphereGlow() {
-            const glowGeometry = new THREE.SphereGeometry(85, 32, 16);
-            const glowMaterial = new THREE.ShaderMaterial({
+            const glowGeometry = new window.THREE.SphereGeometry(85, this.isMobile ? 16 : 32, this.isMobile ? 8 : 16);
+            const glowMaterial = new window.THREE.ShaderMaterial({
                 uniforms: {
                     time: { value: 0 }
                 },
@@ -919,28 +929,30 @@
                         gl_FragColor = vec4(0.0, 1.0, 1.0, intensity * 0.2 * pulse);
                     }
                 `,
-                blending: THREE.AdditiveBlending,
-                side: THREE.BackSide,
+                blending: window.THREE.AdditiveBlending,
+                side: window.THREE.BackSide,
                 transparent: true
             });
             
-            this.atmosphere = new THREE.Mesh(glowGeometry, glowMaterial);
+            this.atmosphere = new window.THREE.Mesh(glowGeometry, glowMaterial);
             this.scene.add(this.atmosphere);
         }
 
         addLighting() {
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+            const ambientLight = new window.THREE.AmbientLight(0x404040, 0.3);
             this.scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0x00FFFF, 0.7);
+            const directionalLight = new window.THREE.DirectionalLight(0x00FFFF, 0.7);
             directionalLight.position.set(1, 1, 1);
-            directionalLight.castShadow = true;
-            directionalLight.shadow.mapSize.width = 2048;
-            directionalLight.shadow.mapSize.height = 2048;
+            if (this.enableShadows) {
+                directionalLight.castShadow = true;
+                directionalLight.shadow.mapSize.width = this.isMobile ? 1024 : 2048;
+                directionalLight.shadow.mapSize.height = this.isMobile ? 1024 : 2048;
+            }
             this.scene.add(directionalLight);
             
             // Add rim lighting
-            const rimLight = new THREE.DirectionalLight(0x25E1ED, 0.3);
+            const rimLight = new window.THREE.DirectionalLight(0x25E1ED, 0.3);
             rimLight.position.set(-1, 0, -1);
             this.scene.add(rimLight);
         }
@@ -955,31 +967,31 @@
                 let markerGeometry, markerMaterial;
                 
                 if (tmz.tier === 'PRIME') {
-                    markerGeometry = new THREE.ConeGeometry(2, 12, 8);
-                    markerMaterial = new THREE.MeshBasicMaterial({
+                    markerGeometry = new window.THREE.ConeGeometry(2, 12, 8);
+                    markerMaterial = new window.THREE.MeshBasicMaterial({
                         color: 0xFFD700,
                         transparent: true,
                         opacity: 0.9
                     });
                 } else if (tmz.tier === 'ALPHA') {
-                    markerGeometry = new THREE.CylinderGeometry(1.5, 3, 10, 8);
-                    markerMaterial = new THREE.MeshBasicMaterial({
+                    markerGeometry = new window.THREE.CylinderGeometry(1.5, 3, 10, 8);
+                    markerMaterial = new window.THREE.MeshBasicMaterial({
                         color: 0x00FFFF,
                         transparent: true,
                         opacity: 0.9
                     });
                 } else {
-                    markerGeometry = new THREE.SphereGeometry(2, 8, 6);
-                    markerMaterial = new THREE.MeshBasicMaterial({
+                    markerGeometry = new window.THREE.SphereGeometry(2, 8, 6);
+                    markerMaterial = new window.THREE.MeshBasicMaterial({
                         color: 0x25E1ED,
                         transparent: true,
                         opacity: 0.8
                     });
                 }
                 
-                const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+                const marker = new window.THREE.Mesh(markerGeometry, markerMaterial);
                 marker.position.copy(position);
-                marker.lookAt(new THREE.Vector3(0, 0, 0));
+                marker.lookAt(new window.THREE.Vector3(0, 0, 0));
                 marker.userData = { tmz: tmz, index: index };
                 marker.name = `tmz-${index}`;
                 
@@ -1006,21 +1018,21 @@
             const end = this.latLonToVector3(tmz2.lat, tmz2.lng, 81);
             
             // Create curved path that follows Earth's surface
-            const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+            const mid = new window.THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
             mid.normalize().multiplyScalar(95); // Curve outward from Earth surface
             
-            const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-            const points = curve.getPoints(100);
-            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const curve = new window.THREE.QuadraticBezierCurve3(start, mid, end);
+            const points = curve.getPoints(this.isMobile ? 50 : 100);
+            const geometry = new window.THREE.BufferGeometry().setFromPoints(points);
             
-            const material = new THREE.LineBasicMaterial({
+            const material = new window.THREE.LineBasicMaterial({
                 color: 0x00FFFF,
                 transparent: true,
                 opacity: 0.7,
                 linewidth: 2
             });
             
-            const line = new THREE.Line(geometry, material);
+            const line = new window.THREE.Line(geometry, material);
             this.scene.add(line);
             this.railLines.push(line);
         }
@@ -1031,7 +1043,6 @@
             // Mouse controls
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
-            let rotationVelocity = { x: 0, y: 0 };
             
             canvas.addEventListener('mousedown', (e) => {
                 isDragging = true;
@@ -1048,13 +1059,11 @@
                     y: e.clientY - previousMousePosition.y
                 };
                 
-                rotationVelocity.x = deltaMove.y * 0.01;
-                rotationVelocity.y = deltaMove.x * 0.01;
-                
-                this.earth.rotation.x += rotationVelocity.x;
-                this.earth.rotation.y += rotationVelocity.y;
-                this.atmosphere.rotation.x += rotationVelocity.x * 0.5;
-                this.atmosphere.rotation.y += rotationVelocity.y * 0.5;
+                const rotationSpeed = this.isMobile ? 0.005 : 0.01;
+                this.earth.rotation.x += deltaMove.y * rotationSpeed;
+                this.earth.rotation.y += deltaMove.x * rotationSpeed;
+                this.atmosphere.rotation.x += deltaMove.y * rotationSpeed * 0.5;
+                this.atmosphere.rotation.y += deltaMove.x * rotationSpeed * 0.5;
                 
                 previousMousePosition = { x: e.clientX, y: e.clientY };
             });
@@ -1070,48 +1079,86 @@
                 this.handleClick(e);
             });
             
-            // Touch controls
-            if (typeof Hammer !== 'undefined') {
-                const hammer = new Hammer(canvas);
-                hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-                hammer.get('pinch').set({ enable: true });
+            // Enhanced touch controls for mobile
+            let touchStartPos = { x: 0, y: 0 };
+            let touchStartTime = 0;
+            
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.isRotating = false;
+                this.lastInteraction = Date.now();
                 
-                hammer.on('panstart', () => {
-                    this.isRotating = false;
-                    this.lastInteraction = Date.now();
-                });
+                const touch = e.touches[0];
+                touchStartPos = { x: touch.clientX, y: touch.clientY };
+                touchStartTime = Date.now();
+            }, { passive: false });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    const deltaX = touch.clientX - touchStartPos.x;
+                    const deltaY = touch.clientY - touchStartPos.y;
+                    
+                    const sensitivity = 0.003;
+                    this.earth.rotation.x += deltaY * sensitivity;
+                    this.earth.rotation.y += deltaX * sensitivity;
+                    this.atmosphere.rotation.x += deltaY * sensitivity * 0.5;
+                    this.atmosphere.rotation.y += deltaX * sensitivity * 0.5;
+                    
+                    touchStartPos = { x: touch.clientX, y: touch.clientY };
+                }
+            }, { passive: false });
+            
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
                 
-                hammer.on('pan', (event) => {
-                    const sensitivity = 0.005;
-                    this.earth.rotation.x += event.deltaY * sensitivity;
-                    this.earth.rotation.y += event.deltaX * sensitivity;
-                    this.atmosphere.rotation.x += event.deltaY * sensitivity * 0.5;
-                    this.atmosphere.rotation.y += event.deltaX * sensitivity * 0.5;
-                });
+                // Handle tap vs drag
+                const touchDuration = Date.now() - touchStartTime;
+                const touch = e.changedTouches[0];
+                const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                const deltaY = Math.abs(touch.clientY - touchStartPos.y);
                 
-                hammer.on('panend', () => {
-                    setTimeout(() => {
-                        this.isRotating = true;
-                    }, 2000);
-                });
-
-                hammer.on('tap', (event) => {
-                    this.handleClick(event.srcEvent);
-                });
+                if (touchDuration < 300 && deltaX < 10 && deltaY < 10) {
+                    // This was a tap, not a drag
+                    this.handleClick(e.changedTouches[0]);
+                }
                 
-                hammer.on('pinch', (event) => {
-                    const scale = event.scale;
+                setTimeout(() => {
+                    this.isRotating = true;
+                }, 2000);
+            }, { passive: false });
+            
+            // Pinch to zoom
+            let initialDistance = 0;
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    initialDistance = Math.sqrt(dx * dx + dy * dy);
+                }
+            });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const scale = distance / initialDistance;
+                    
                     this.camera.position.z = Math.max(150, Math.min(500, this.camera.position.z / scale));
-                });
-            }
+                    initialDistance = distance;
+                }
+            });
             
             // Zoom with mouse wheel
             canvas.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const zoomSpeed = 10;
+                const zoomSpeed = this.isMobile ? 5 : 10;
                 this.camera.position.z += e.deltaY * zoomSpeed * 0.01;
                 this.camera.position.z = Math.max(150, Math.min(500, this.camera.position.z));
-            });
+            }, { passive: false });
             
             // Handle window resize
             window.addEventListener('resize', () => {
@@ -1126,11 +1173,16 @@
 
         handleClick(event) {
             const rect = this.renderer.domElement.getBoundingClientRect();
-            const mouse = new THREE.Vector2();
-            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            const mouse = new window.THREE.Vector2();
             
-            const raycaster = new THREE.Raycaster();
+            // Handle both mouse and touch events
+            const clientX = event.clientX || event.targetTouches?.[0]?.clientX || event.changedTouches?.[0]?.clientX;
+            const clientY = event.clientY || event.targetTouches?.[0]?.clientY || event.changedTouches?.[0]?.clientY;
+            
+            mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+            
+            const raycaster = new window.THREE.Raycaster();
             raycaster.setFromCamera(mouse, this.camera);
             
             const intersects = raycaster.intersectObjects(this.tmzMarkers);
@@ -1176,8 +1228,8 @@
                 
                 // Auto-rotation when not interacting
                 if (this.isRotating && Date.now() - this.lastInteraction > 3000) {
-                    this.earth.rotation.y += 0.002;
-                    this.atmosphere.rotation.y += 0.001;
+                    this.earth.rotation.y += this.isMobile ? 0.001 : 0.002;
+                    this.atmosphere.rotation.y += this.isMobile ? 0.0005 : 0.001;
                 }
                 
                 // Update atmosphere shader
@@ -1185,18 +1237,18 @@
                     this.atmosphere.material.uniforms.time.value = time;
                 }
                 
-                // Animate TMZ markers
+                // Animate TMZ markers with reduced frequency on mobile
+                const pulseSpeed = this.isMobile ? 0.002 : 0.003;
                 this.tmzMarkers.forEach((marker, index) => {
-                    const pulseSpeed = 0.003;
                     const phase = index * 0.5;
                     marker.material.opacity = 0.7 + 0.3 * Math.sin(time * pulseSpeed + phase);
                 });
                 
                 // Animate rail connections
+                const railPulseSpeed = this.isMobile ? 0.002 : 0.004;
                 this.railLines.forEach((line, index) => {
-                    const pulseSpeed = 0.004;
                     const phase = index * 0.3;
-                    line.material.opacity = 0.5 + 0.3 * Math.sin(time * pulseSpeed + phase);
+                    line.material.opacity = 0.5 + 0.3 * Math.sin(time * railPulseSpeed + phase);
                 });
                 
                 this.renderer.render(this.scene, this.camera);
@@ -1225,7 +1277,7 @@
             const phi = (90 - lat) * (Math.PI / 180);
             const theta = (lon + 180) * (Math.PI / 180);
             
-            return new THREE.Vector3(
+            return new window.THREE.Vector3(
                 -radius * Math.sin(phi) * Math.cos(theta),
                 radius * Math.cos(phi),
                 radius * Math.sin(phi) * Math.sin(theta)
@@ -1246,7 +1298,13 @@
                 <div style="text-align: center;">
                     <h2 style="color: #ff4444; margin-bottom: 1rem;">CHRONOS SYSTEM ERROR</h2>
                     <p style="color: #ffaa44; margin-bottom: 1rem;">Failed to initialize 3D Earth system</p>
-                    <p style="color: #ffffff; font-size: 0.9rem;">Please check your internet connection and refresh the page</p>
+                    <p style="color: #ffffff; font-size: 0.9rem;">Three.js loading failed. Check console for details.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                        <p style="font-size: 0.8rem; color: #aaaaaa;">Debug Info:</p>
+                        <p style="font-size: 0.8rem;">WebGL: ${!!window.WebGLRenderingContext}</p>
+                        <p style="font-size: 0.8rem;">Mobile: ${/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)}</p>
+                        <p style="font-size: 0.8rem;">URL: ${window.location.href}</p>
+                    </div>
                     <button onclick="location.reload()" style="
                         margin-top: 1rem;
                         padding: 0.8rem 1.5rem;
@@ -1263,6 +1321,8 @@
                     ">RETRY INITIALIZATION</button>
                 </div>
             `;
+            document.getElementById('system-status').textContent = 'ERROR';
+            updateDebug('threejs', 'FAILED');
         }
     }
 
@@ -1276,7 +1336,7 @@
         if (event.touches.length > 1) {
             event.preventDefault();
         }
-    });
+    }, { passive: false });
 
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function(event) {
@@ -1285,7 +1345,7 @@
             event.preventDefault();
         }
         lastTouchEnd = now;
-    }, false);
+    }, { passive: false });
 </script>
 ```
 
